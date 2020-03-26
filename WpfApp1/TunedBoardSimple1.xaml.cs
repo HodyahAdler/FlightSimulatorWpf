@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,28 +16,13 @@ using System.Windows.Shapes;
 namespace WpfApp1
 {
 	/// <summary>
-	/// Interaction logic for MainWindow.xaml
+	/// Interaction logic for TunedBoardSimple1.xaml
 	/// </summary>
-	public partial class MainWindow : Window
+	public partial class TunedBoardSimple1 : UserControl
 	{
-		static public void MainA()
-		{	
-			Console.WriteLine("hii");
-			ClientServer client = new ClientServerSimple();
-			client.openIp();
-			int x = 0;
-			while (x < 500)
-			{
-				x++;
-			}
-			client.close();
-		}
-		public MainWindow()
+		public TunedBoardSimple1()
 		{
-//			MainA();
 			InitializeComponent();
-
 		}
 	}
 }
-

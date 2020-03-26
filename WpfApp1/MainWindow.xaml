@@ -6,8 +6,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="MainWindow" Height="1016.779" Width="1361.965">
+        Title="MainWindow" Height="1152.017" Width="1444.37" >
     <Grid>
-        <m:Map CredentialsProvider= "AtjyC-xwHpELdI2Erh5zCJ82CbnB06WQPXyWIJsL2hW58TcrZLqpGn2bfUTqSRoF" Mode="AerialWithLabels" Center ="31.7461,35.2516" ZoomLevel ="10" Margin="0,-26,468.333,0.333"/>
+        <m:Map CredentialsProvider= "AtjyC-xwHpELdI2Erh5zCJ82CbnB06WQPXyWIJsL2hW58TcrZLqpGn2bfUTqSRoF" Mode="AerialWithLabels"
+               HorizontalContentAlignment="Left"
+               Center ="31.7461,35.2516" ZoomLevel ="10" Margin="0,0,437,0.667" 
+               />
     </Grid>
+
 </Window>

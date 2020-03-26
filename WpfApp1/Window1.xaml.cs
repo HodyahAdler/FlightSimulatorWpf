@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -11,34 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace WpfApp1
 {
 	/// <summary>
-	/// Interaction logic for MainWindow.xaml
+	/// Interaction logic for Window1.xaml
 	/// </summary>
-	public partial class MainWindow : Window
+	public partial class Window1 : Window
 	{
-		static public void MainA()
-		{	
-			Console.WriteLine("hii");
-			ClientServer client = new ClientServerSimple();
-			client.openIp();
-			int x = 0;
-			while (x < 500)
-			{
-				x++;
-			}
-			client.close();
-		}
-		public MainWindow()
+		public Window1()
 		{
-//			MainA();
 			InitializeComponent();
-
 		}
+
 	}
 }
-
