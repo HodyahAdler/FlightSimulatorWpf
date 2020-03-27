@@ -12,8 +12,11 @@ namespace WpfApp1
 {
 	interface ClientServer
 	{
-		void openIp();
-		void getInformation();
-		void close();
+		void connect();
+		void connect(string ip, int port);
+		String read(String asking);
+		void writh(String asking);
+		void disconnect();
+
 	}
 }

@@ -23,6 +23,7 @@ namespace WpfApp1
 				rectangleList[i].Width = 10;
 				rectangleList[i].Height = 0;
 			}
+			
 
 		}
 		void upDate()
@@ -32,6 +33,14 @@ namespace WpfApp1
 				rectangleList[i].Height = highOfBlock[i];
 			}
 		}
-
+		/**
+		 *             <>
+                <DataGrid HorizontalAlignment="Right" VerticalAlignment="Top" Width="356" Height="164" Grid.Row="2" 
+                      Grid.Column="8" Panel.ZIndex="-10" FontFamily="Segoe UI Black" Name="tableInformation" 
+                      AccessKeyManager.AccessKeyPressed="tableInformation_AccessKeyPressed" 
+                      DataGridCell.Selected="tableInformation_Selected" 
+                      Binding.SourceUpdated="tableInformation_SourceUpdated"/>
+            </>
+		 */
 	}
 }

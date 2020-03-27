@@ -5,13 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="Window1"  Height="1152.017" Width="1444.37" 
-        >
+        Title="Window1"  Height="1152.017" Width="1444.37" >
     <Grid>
-        
-        <Rectangle Width="100" Height="200" 
-                   Fill="Red" 
-                   HorizontalAlignment="Right" 
-                   ></Rectangle>
+       
     </Grid>
 </Window>

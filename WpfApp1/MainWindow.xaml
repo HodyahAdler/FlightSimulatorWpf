@@ -6,12 +6,83 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="MainWindow" Height="1152.017" Width="1444.37" >
+        Title="MainWindow" Height="600" Width="1000" >
     <Grid>
         <m:Map CredentialsProvider= "AtjyC-xwHpELdI2Erh5zCJ82CbnB06WQPXyWIJsL2hW58TcrZLqpGn2bfUTqSRoF" Mode="AerialWithLabels"
                HorizontalContentAlignment="Left"
-               Center ="31.7461,35.2516" ZoomLevel ="10" Margin="0,0,437,0.667" 
+               Center ="31.7461,35.2516" ZoomLevel ="10" Margin="0,0,361.333,-0.333" 
                />
+        <Button x:Name="TunedBoardGraph" Margin="0,0,0.333,303.667"
+                Background="WhiteSmoke" HorizontalAlignment="Right" Width="361">
+            <FlowDocumentReader Height="257">
+                <FlowDocument>
+                    <Table CellSpacing="5">
+                        <TableRowGroup>
+                            <TableRow Background="#FF0FA7D8">
+                                <TableCell TextAlignment="Center" ColumnSpan="4">
+                                    <Paragraph FontSize="12pt" FontWeight="UltraBlack" >Tuned Board</Paragraph>
+                                </TableCell>
+                            </TableRow>
+                            <TableRow Background="#FFFAFC2B">
+                                <TableCell TextAlignment="Center" >
+                                    <Paragraph  FontSize="8pt" FontWeight="UltraBlack" Padding="1" TextIndent="1" OverridesDefaultStyle="True">heading deg</Paragraph>
+                                </TableCell>
+                                <TableCell TextAlignment="Center">
+                                    <Paragraph FontSize="8pt" FontWeight="UltraBlack" Padding="1" TextIndent="1" OverridesDefaultStyle="True">vertical speed</Paragraph>
+                                </TableCell>
+                                <TableCell>
+                                    <Paragraph FontSize="8pt" FontWeight="UltraBlack" Padding="1" TextIndent="1" OverridesDefaultStyle="True" >ground speed</Paragraph>
+                                </TableCell>
+                                <TableCell>
+                                    <Paragraph FontSize="8pt" FontWeight="UltraBlack" Padding="1" TextIndent="1" OverridesDefaultStyle="True" >indicator indicated speed</Paragraph>
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell Name="heading_deg">
+                                    <Paragraph FontSize="20" FontStyle="Italic" TextAlignment="Center" Binding.SourceUpdated="heading_deg_SourceUpdated"></Paragraph>
+                                </TableCell>
+                                <TableCell Name="vertical_speed">
+                                    <Paragraph FontSize="20" FontStyle="Italic" TextAlignment="Center" Binding.SourceUpdated="vartical_speed_SourceUpdated"></Paragraph>
+                                </TableCell>
+                                <TableCell Name="ground_speed">
+                                    <Paragraph FontSize="20" FontStyle="Italic" TextAlignment="Center" Binding.SourceUpdated="ground_speed_SourceUpdated"></Paragraph>
+                                </TableCell>
+                                <TableCell Name="indicator_indicated_speed">
+                                    <Paragraph FontSize="20" FontStyle="Italic" TextAlignment="Center" Binding.SourceUpdated="indicator_indicated_speed_SourceUpdated"></Paragraph>
+                                </TableCell>
+                            </TableRow>
+                            <TableRow Background="#FFFAFC2B">
+                                <TableCell>
+                                    <Paragraph FontSize="8pt" FontWeight="UltraBlack" Padding="1" TextIndent="1" OverridesDefaultStyle="True" >gps indicated altitude</Paragraph>
+                                </TableCell>
+                                <TableCell>
+                                    <Paragraph FontSize="8pt" FontWeight="UltraBlack" Padding="1" TextIndent="1" OverridesDefaultStyle="True" >indicator internal roll</Paragraph>
+                                </TableCell>
+                                <TableCell>
+                                    <Paragraph FontSize="8pt" FontWeight="UltraBlack" Padding="1" TextIndent="1" OverridesDefaultStyle="True" >indicator internal pitch</Paragraph>
+                                </TableCell>
+                                <TableCell>
+                                    <Paragraph FontSize="8pt" FontWeight="UltraBlack" Padding="1" TextIndent="1" OverridesDefaultStyle="True" >altimeter indicated altitude</Paragraph>
+                                </TableCell>
+                            </TableRow>
+                            <TableRow >
+                                <TableCell Name="gps_indicated_altitude">
+                                    <Paragraph FontSize="20" FontStyle="Italic" TextAlignment="Center" Binding.SourceUpdated="gps_indicated_altitude_SourceUpdated">8</Paragraph>
+                                </TableCell>
+                                <TableCell Name="indicator_internal_roll">
+                                    <Paragraph FontSize="20" FontStyle="Italic" TextAlignment="Center" Binding.SourceUpdated="indicator_internal_roll_SourceUpdated"></Paragraph>
+                                </TableCell>
+                                <TableCell Name="indicator_internal_pitch">
+                                    <Paragraph FontSize="20" FontStyle="Italic" TextAlignment="Center" Binding.SourceUpdated="indicator_internal_pitch_SourceUpdated"></Paragraph>
+                                </TableCell>
+                                <TableCell Name="altimeter_indicated_altitude">
+                                    <Paragraph FontSize="20" FontStyle="Italic" TextAlignment="Center" Binding.SourceUpdated="altimeter_indicated_altitude_SourceUpdated"></Paragraph>
+                                </TableCell>
+                            </TableRow>
+                        </TableRowGroup>
+                    </Table>
+                </FlowDocument>
+            </FlowDocumentReader>
+        </Button>
     </Grid>
-
 </Window>

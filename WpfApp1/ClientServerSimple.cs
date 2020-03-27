@@ -4,8 +4,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
-using System.Threading;
 
 // i was helping from GeeksforGeeks
 namespace WpfApp1
@@ -15,50 +13,46 @@ namespace WpfApp1
 	class ClientServerSimple : ClientServer
 	{
 		class notSeccsedConnectToServer: Exception{}
-		class notSeccsedSendTheMassage : Exception {}
-		Thread sendThread;
+		class notSeccsedSendTheMassage : Exception { }
 		TcpClient client;
-		bool stop = false;
-		Dictionary<string, string> mapStringOfSimulator = new Dictionary<string, string>(){};
-		
-		public void openIp() {
-			//TODO how to do the map in constructor
-			mapStringOfSimulator.Add("lengthLine", "get /position/longitude-deg\n");
-			mapStringOfSimulator.Add("widthLine", "get / position / latitude - deg\n");
+		string ip = "127.0.0.1";
+		int port = 5402;
+		public void connect(string ip, int port)
+		{
+			this.ip = ip;
+			this.port = port;
+			connect();
+		}
+		public void connect() {
 			try {
-				const int port = 5402;
-//				this.client = new TcpClient(Dns.GetHostName(), port);
-				this.client = new TcpClient("127.0.0.1", port);
-				this.sendThread = new Thread(getInformation);
-				this.sendThread.Start();
+				this.client = new TcpClient(ip, port);
+//				this.sendThread = new Thread(start);
+//				this.sendThread.Start();
 			} catch (Exception e){
 				throw new notSeccsedConnectToServer();
 			}
 		}
-		public void getInformation()
-		{
-			while (!stop)
-			{
-				try
-				{
-					byte[] reader = Encoding.ASCII.GetBytes("get /controls/flight/rudder\n" +
-					"get /controls/engines/current-engine/throttle\n" + mapStringOfSimulator["lengthLine"] +
-					mapStringOfSimulator["widthLine"]);
-					this.client.GetStream().Write(reader, 0, reader.Length);
-					byte[] buffer = new byte[1024];
-					this.client.GetStream().Read(buffer, 0, 1024);
-					string information = Encoding.ASCII.GetString(buffer, 0, buffer.Length);
-					Console.WriteLine(information);
-				}
-				catch (Exception e) { close(); throw new notSeccsedSendTheMassage(); }
-			}
+		public String read(String asking) {
+			try {
+				byte[] reader = Encoding.ASCII.GetBytes("get " + asking + "\n");
+				this.client.GetStream().Write(reader, 0, reader.Length);
+				byte[] buffer = new byte[1024];
+				this.client.GetStream().Read(buffer, 0, 1024);
+				String information = Encoding.ASCII.GetString(buffer, 0, buffer.Length);
+				return information;
+			} catch (Exception e) {disconnect(); throw new notSeccsedSendTheMassage(); }
 		}
-
-		public void close()
+		public void writh(String asking)
 		{
-			//TODO check if this how stop theard
-			//			stop = true;
-			this.sendThread.Join();
+			try
+			{
+				byte[] reader = Encoding.ASCII.GetBytes("set" + asking + "\n");
+				this.client.GetStream().Write(reader, 0, reader.Length);
+			} catch(Exception e) { disconnect(); throw new notSeccsedSendTheMassage(); }
+		}
+		public void disconnect()
+		{
+			this.client.GetStream().Close();
 			this.client.Close();
 			//todo if need delete?
 		}
