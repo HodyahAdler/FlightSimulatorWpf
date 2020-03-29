@@ -13,29 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace FlightSimulatorWpf
+namespace FlightSimulatorWpf.controls
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for Map.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class Map : UserControl
     {
-        SimulatorViewModel vm;
-        public MainWindow()
+        public Map()
         {
             InitializeComponent();
-            vm = new SimulatorViewModel(new FlyModel(new FlyTelnetClient()));
-            DataContext = vm;
-        }
-
-        private void MyJoystick_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Map_Loaded(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

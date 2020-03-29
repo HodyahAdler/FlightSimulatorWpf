@@ -20,7 +20,7 @@ namespace FlightSimulatorWpf
 		public String value { get; set; }
 		public bool Iread { get; set; }
 	}
-	class FlyModel : ISimulatorModel
+	class FlyModel : IModel
 	{
 		class NotSeccsedTookWithServer : Exception { };
 		private ITelnetClient telnetClient;

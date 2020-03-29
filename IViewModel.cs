@@ -9,6 +9,5 @@ namespace FlightSimulatorWpf
     interface IViewModel : INotifyPropertyChanged
     {
         void NotifyPropertyChanged(string PropertyName);
-
     }
 }

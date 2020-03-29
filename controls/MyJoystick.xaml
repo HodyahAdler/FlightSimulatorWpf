@@ -7,30 +7,30 @@
              xmlns:local="clr-namespace:FlightSimulatorWpf.controls"
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="800">
-    <Grid>
+    <Grid RenderTransformOrigin="0.5,0.5">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="80"/>
             <ColumnDefinition Width="300"/>
             <ColumnDefinition Width="80"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="60"/>
-            <RowDefinition Height="280"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="240"/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Slider x:Name="ThrottleSlider" Background="DarkSeaGreen" Grid.Column="0" Grid.Row="1" Margin ="24,0,29.8,26" Minimum="0" Maximum="1" Value="0.5" TickPlacement="BottomRight" TickFrequency="0.1" Orientation="Vertical" Height="255" Width="30"/>
-        <Label Grid.Column="0" Grid.Row="2" Content="Throttle" FontSize="16" FontWeight="Bold"  HorizontalContentAlignment="Left" Grid.ColumnSpan="2" Margin="0,-20,300.6,0" />
+        <Slider x:Name="ThrottleSlider" Background="DarkSeaGreen" Grid.Column="0" Margin ="29,56,21.8,29" Minimum="0" Maximum="1" Value="0.5" TickPlacement="BottomRight" TickFrequency="0.1" Orientation="Vertical" Grid.RowSpan="2"/>
+        <Label Grid.Column="0" Grid.Row="1" Content="Throttle" FontSize="16" FontWeight="Bold"  HorizontalContentAlignment="Left" Grid.ColumnSpan="2" Margin="10,205,290.6,29" Grid.RowSpan="2" />
 
-        <StackPanel Grid.Column="1" Grid.Row="0">
-            <Label Margin ="-20 0 0 0" Content="Aileron" FontSize="16" FontWeight="Bold"  HorizontalContentAlignment="Center"/>
-            <Slider x:Name="AileronSlider" Background="Tan" Grid.Column="1" Grid.Row="0" Margin ="-30,0,0,0" Minimum="-1" Maximum="1" Value="0.5" TickPlacement="BottomRight" TickFrequency="0.1" Height="30" Width="250"/>
+        <StackPanel Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Margin="0.2,27,80.4,214" Grid.RowSpan="2">
+            <Label Margin ="-30,0,-0.2,0" Content="Aileron" FontSize="16" FontWeight="Bold"  HorizontalContentAlignment="Center" RenderTransformOrigin="0.484,0.419"/>
+            <Slider x:Name="AileronSlider" Background="Tan" Margin ="5,0,45.8,0" Minimum="-1" Maximum="1" Value="0.5" TickPlacement="BottomRight" TickFrequency="0.1" Height="30" Width="250"/>
         </StackPanel>
 
-        <local:Joystick x:Name="MyRudder" RenderTransformOrigin="0.5,0.5" Grid.Column="1" Grid.Row="1" VerticalContentAlignment="Top" Margin ="-40 -30 0 0">
+        <local:Joystick x:Name="MyRudder" RenderTransformOrigin="0.5,0.5" VerticalContentAlignment="Top" Margin ="41,31,80.4,0" Grid.ColumnSpan="3" Grid.RowSpan="2">
             <local:Joystick.RenderTransform>
                 <TransformGroup>
-                    <ScaleTransform ScaleX="0.6" ScaleY="0.6"/>
+                    <ScaleTransform ScaleX="0.5" ScaleY="0.5"/>
                     <SkewTransform/>
                     <RotateTransform/>
                     <TranslateTransform/>
@@ -38,11 +38,11 @@
             </local:Joystick.RenderTransform>
         </local:Joystick>
 
-        <Label Grid.Row="2" Grid.Column="1" Margin ="-35 -40 0 0" Content="--Rudder--" FontSize="16" FontWeight="Bold"  HorizontalContentAlignment="Center"/>
-        <Label Grid.Row="1" Grid.Column="1" Margin ="191.2,103,69.4,94" Content="--Elevator--" FontSize="16" FontWeight="Bold"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center" RenderTransformOrigin="0.5,0.5" Grid.ColumnSpan="2" >
+        <Label Grid.Row="1" Margin ="36.2,185,71.6,24" Content="--Rudder--" FontSize="16" FontWeight="Bold"  HorizontalContentAlignment="Center" Grid.Column="1"/>
+        <Label Grid.Row="1" Grid.Column="1" Margin ="176.2,81,3.6,120" Content="--Elevator--" FontSize="16" FontWeight="Bold"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center" RenderTransformOrigin="0.5,0.5" >
             <Label.RenderTransform>
                 <TransformGroup>
-                    <ScaleTransform/>
+                    <ScaleTransform ScaleX="1.15"/>
                     <SkewTransform/>
                     <RotateTransform Angle="90"/>
                     <TranslateTransform/>

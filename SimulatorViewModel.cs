@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace FlightSimulatorWpf
 {
     class SimulatorViewModel : IViewModel {
-        private ISimulatorModel model;
+        private IModel model;
         private double throttle;
         private double aileron;
       /*  private double longitude;
@@ -16,7 +16,7 @@ namespace FlightSimulatorWpf
         private double rudder;
         private double elevator;
 
-        public SimulatorViewModel(ISimulatorModel m)
+        public SimulatorViewModel(IModel m)
         {
             this.model = m;
             model.PropertyChanged += delegate (Object sender, PropertyChangedEventArgs e)

@@ -7,12 +7,12 @@
         xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
        xmlns:local="clr-namespace:FlightSimulatorWpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600.00" Width="1100.000">
-    <Border Padding="10">
+        Title="MainWindow" Height="600.00" Width="1110.000">
+    <Border Padding="10" Margin="0,0,3.6,0.4">
 
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="700"/>
+                <ColumnDefinition Width="680"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
@@ -21,13 +21,24 @@
                     <RowDefinition Height="180"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Button Margin ="10 0 10 10" Grid.Column="1" Grid.Row="0" Content="לוח מכוונים"/>
+                <Grid Grid.Row="0">
+                    <Controls:TunedBoard Margin ="-3,-21,9.6,-80" RenderTransformOrigin="0.5,0.5" >
+                        <Controls:TunedBoard.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleY="0.85"/>
+                                <SkewTransform/>
+                                <RotateTransform/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </Controls:TunedBoard.RenderTransform>
+                    </Controls:TunedBoard>
+                </Grid>
                 <Grid Grid.Row="1">
-                    <Controls:MyJoystick Loaded="MyJoystick_Loaded" RenderTransformOrigin="0.5,0.5"/>
+                    <Controls:MyJoystick Margin ="0,34,-0.4,-39.6" Loaded="MyJoystick_Loaded" RenderTransformOrigin="0.5,0.5"/>
                 </Grid>
             </Grid>
 
-            <m:Map Grid.Column="0" Margin ="0 0 10 0" CredentialsProvider="AtjyC-xwHpELdI2Erh5zCJ82CbnB06WQPXyWIJsL2hW58TcrZLqpGn2bfUTqSRoF" Center="32.002644, 34.888781 " ZoomLevel="12" RenderTransformOrigin="0.5,0.5"/>
+            <Controls:Map Grid.Column="0"/>
         </Grid>
 
     </Border>
