@@ -60,6 +60,11 @@ namespace FlightSimulatorWpf
 		{
 
 		}
+
+		private void TunedBoard_Loaded(object sender, RoutedEventArgs e)
+		{
+
+		}
 	}
 }
 

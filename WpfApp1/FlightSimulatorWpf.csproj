@@ -72,6 +72,7 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -91,7 +92,11 @@
       <DependentUpon>TunedBoard.xaml</DependentUpon>
     </Compile>
     <Compile Include="flyModel.cs" />
-    <Compile Include="ClientServerSimple.cs" />
+    <Compile Include="TelnetClient.cs" />
+    <Compile Include="INotifyPropertyChanged.cs" />
+    <Compile Include="IModel.cs" />
+    <Compile Include="IViewModel.cs" />
+    <Compile Include="SimulatorViewModel.cs" />
     <Compile Include="TunedBoard.cs" />
     <Compile Include="TunedBoardSimple.cs" />
     <Page Include="controls\Joystick.xaml">
@@ -118,7 +123,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ClientServer.cs" />
+    <Compile Include="ITelnetClient.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

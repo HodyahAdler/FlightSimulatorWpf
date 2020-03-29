@@ -23,8 +23,6 @@ namespace WpfApp1
 				rectangleList[i].Width = 10;
 				rectangleList[i].Height = 0;
 			}
-			
-
 		}
 		void upDate()
 		{

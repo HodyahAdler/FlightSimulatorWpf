@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:FlightSimulatorWpf"
         xmlns:controls="clr-namespace:FlightSimulatorWpf.controls"
         mc:Ignorable="d"
-        Title="MainWindow" Height="680.00" Width="1100.000">
+        Title="MainWindow" Height="700.00" Width="1100.000">
     <Border Padding="10">
 
         <Grid>
@@ -25,10 +25,10 @@
                 </Grid.RowDefinitions>
                 <Button Margin ="310,0,10.334,10" Grid.Row="0" Content="TunedBoard"/>
                 <Grid Grid.Row="1" HorizontalAlignment="Center" Margin="293,10,-26.666,-10.333" Grid.RowSpan="2" Width="453">
-                    <controls:MyJoystick Loaded="MyJoystick_Loaded" RenderTransformOrigin="0.498,0.746" Margin="42,22,0,10" HorizontalAlignment="Left" Width="401"/>
+                    <controls:MyJoystick Loaded="MyJoystick_Loaded" RenderTransformOrigin="0.498,0.746" Margin="42,32,0,0" HorizontalAlignment="Left" Width="401"/>
                 </Grid>
                 <Grid Grid.Row="0" Margin="0,0,0.334,0">
-                    <controls:TunedBoard  RenderTransformOrigin="0.5,0.5" Margin="313,0,0.999,-31" Height="281" VerticalAlignment="Top">
+                    <controls:TunedBoard  RenderTransformOrigin="0.5,0.5" Margin="313,0,-0.001,-31" Height="281" VerticalAlignment="Top" Loaded="TunedBoard_Loaded">
                     </controls:TunedBoard>
                 </Grid>
                 <Grid Grid.Column="0" Margin="0,0,0.334,0">
@@ -43,7 +43,7 @@
                         <ColumnDefinition Width="13*"/>
 
                     </Grid.ColumnDefinitions>
-                    <controls:Map Margin="-367,-13,194.333,-375" Loaded="Map_Loaded" RenderTransformOrigin="0.495,0.502" Height="638" VerticalAlignment="Top" HorizontalAlignment="Right" Width="684" Grid.Row="1" Grid.RowSpan="2"/>
+                    <controls:Map Margin="-367,-13,194.333,-393" Loaded="Map_Loaded" RenderTransformOrigin="0.495,0.502" Height="656" VerticalAlignment="Top" HorizontalAlignment="Right" Width="684" Grid.Row="1" Grid.RowSpan="2"/>
                 </Grid>
             </Grid>
 
