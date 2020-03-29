@@ -6,7 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 
 // i was helping from GeeksforGeeks
-namespace WpfApp1
+namespace FlightSimulatorWpf
 {
 		//todo this is was need to be change? with command? i dont sure
 		//todo click that can change thing?

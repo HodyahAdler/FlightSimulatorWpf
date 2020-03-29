@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 // i was helping from GeeksforGeeks
-namespace WpfApp1
+namespace FlightSimulatorWpf
 {
 	interface ClientServer
 	{

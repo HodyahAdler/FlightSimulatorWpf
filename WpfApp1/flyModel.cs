@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 
-namespace WpfApp1
+namespace FlightSimulatorWpf
 {
 	public class flyData
 	{

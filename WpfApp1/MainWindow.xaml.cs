@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WpfApp1
+namespace FlightSimulatorWpf
 {
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
@@ -34,59 +34,33 @@ namespace WpfApp1
 				}
 				client.close();
 		*/
-			flyModel flyModel = new flyModel();
-			flyModel.connect();
-			flyModel.start();
+			
+							flyModel flyModel = new flyModel();
+							flyModel.connect();
+							flyModel.start();
 
-			flyModel.disconnect();
+							flyModel.disconnect();
+				
 		}
+
+		/// <summary>
+		/// Interaction logic for MainWindow.xaml
+		/// </summary>
 		public MainWindow()
 		{
-		//			MainA();
 			InitializeComponent();
 		}
 
+		private void MyJoystick_Loaded(object sender, RoutedEventArgs e)
+		{
 
-		private void heading_deg_SourceUpdated(object sender, DataTransferEventArgs e)
-		{
-			int x = 0;
-			sender = x;
 		}
-		private void vartical_speed_SourceUpdated(object sender, DataTransferEventArgs e)
+
+		private void Map_Loaded(object sender, RoutedEventArgs e)
 		{
-			int x = 0;
-			sender = x;
-		}
-		private void ground_speed_SourceUpdated(object sender, DataTransferEventArgs e)
-		{
-			int x = 0;
-			sender = x;
-		}
-		private void indicator_indicated_speed_SourceUpdated(object sender, DataTransferEventArgs e)
-		{
-			int x = 0;
-			sender = x;
-		}
-		private void gps_indicated_altitude_SourceUpdated(object sender, DataTransferEventArgs e)
-		{
-			int x = 0;
-			sender = x;
-		}
-		private void indicator_internal_roll_SourceUpdated(object sender, DataTransferEventArgs e)
-		{
-			int x = 0;
-			sender = x;
-		}
-		private void indicator_internal_pitch_SourceUpdated(object sender, DataTransferEventArgs e)
-		{
-			int x = 0;
-			sender = x;
-		}
-		private void altimeter_indicated_altitude_SourceUpdated(object sender, DataTransferEventArgs e)
-		{
-			int x = 0;
-			sender = x;
+
 		}
 	}
 }
+
 

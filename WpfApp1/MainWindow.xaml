@@ -1,88 +1,52 @@
-﻿<Window x:Class="WpfApp1.MainWindow"
+﻿<Window x:Class="FlightSimulatorWpf.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WpfApp1"
+        xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
+        xmlns:local="clr-namespace:FlightSimulatorWpf"
+        xmlns:controls="clr-namespace:FlightSimulatorWpf.controls"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="1000" >
-    <Grid>
-        <m:Map CredentialsProvider= "AtjyC-xwHpELdI2Erh5zCJ82CbnB06WQPXyWIJsL2hW58TcrZLqpGn2bfUTqSRoF" Mode="AerialWithLabels"
-               HorizontalContentAlignment="Left"
-               Center ="31.7461,35.2516" ZoomLevel ="10" Margin="0,0,361.333,-0.333" 
-               />
-        <Button x:Name="TunedBoardGraph" Margin="0,0,0.333,303.667"
-                Background="WhiteSmoke" HorizontalAlignment="Right" Width="361">
-            <FlowDocumentReader Height="257">
-                <FlowDocument>
-                    <Table CellSpacing="5">
-                        <TableRowGroup>
-                            <TableRow Background="#FF0FA7D8">
-                                <TableCell TextAlignment="Center" ColumnSpan="4">
-                                    <Paragraph FontSize="12pt" FontWeight="UltraBlack" >Tuned Board</Paragraph>
-                                </TableCell>
-                            </TableRow>
-                            <TableRow Background="#FFFAFC2B">
-                                <TableCell TextAlignment="Center" >
-                                    <Paragraph  FontSize="8pt" FontWeight="UltraBlack" Padding="1" TextIndent="1" OverridesDefaultStyle="True">heading deg</Paragraph>
-                                </TableCell>
-                                <TableCell TextAlignment="Center">
-                                    <Paragraph FontSize="8pt" FontWeight="UltraBlack" Padding="1" TextIndent="1" OverridesDefaultStyle="True">vertical speed</Paragraph>
-                                </TableCell>
-                                <TableCell>
-                                    <Paragraph FontSize="8pt" FontWeight="UltraBlack" Padding="1" TextIndent="1" OverridesDefaultStyle="True" >ground speed</Paragraph>
-                                </TableCell>
-                                <TableCell>
-                                    <Paragraph FontSize="8pt" FontWeight="UltraBlack" Padding="1" TextIndent="1" OverridesDefaultStyle="True" >indicator indicated speed</Paragraph>
-                                </TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell Name="heading_deg">
-                                    <Paragraph FontSize="20" FontStyle="Italic" TextAlignment="Center" Binding.SourceUpdated="heading_deg_SourceUpdated"></Paragraph>
-                                </TableCell>
-                                <TableCell Name="vertical_speed">
-                                    <Paragraph FontSize="20" FontStyle="Italic" TextAlignment="Center" Binding.SourceUpdated="vartical_speed_SourceUpdated"></Paragraph>
-                                </TableCell>
-                                <TableCell Name="ground_speed">
-                                    <Paragraph FontSize="20" FontStyle="Italic" TextAlignment="Center" Binding.SourceUpdated="ground_speed_SourceUpdated"></Paragraph>
-                                </TableCell>
-                                <TableCell Name="indicator_indicated_speed">
-                                    <Paragraph FontSize="20" FontStyle="Italic" TextAlignment="Center" Binding.SourceUpdated="indicator_indicated_speed_SourceUpdated"></Paragraph>
-                                </TableCell>
-                            </TableRow>
-                            <TableRow Background="#FFFAFC2B">
-                                <TableCell>
-                                    <Paragraph FontSize="8pt" FontWeight="UltraBlack" Padding="1" TextIndent="1" OverridesDefaultStyle="True" >gps indicated altitude</Paragraph>
-                                </TableCell>
-                                <TableCell>
-                                    <Paragraph FontSize="8pt" FontWeight="UltraBlack" Padding="1" TextIndent="1" OverridesDefaultStyle="True" >indicator internal roll</Paragraph>
-                                </TableCell>
-                                <TableCell>
-                                    <Paragraph FontSize="8pt" FontWeight="UltraBlack" Padding="1" TextIndent="1" OverridesDefaultStyle="True" >indicator internal pitch</Paragraph>
-                                </TableCell>
-                                <TableCell>
-                                    <Paragraph FontSize="8pt" FontWeight="UltraBlack" Padding="1" TextIndent="1" OverridesDefaultStyle="True" >altimeter indicated altitude</Paragraph>
-                                </TableCell>
-                            </TableRow>
-                            <TableRow >
-                                <TableCell Name="gps_indicated_altitude">
-                                    <Paragraph FontSize="20" FontStyle="Italic" TextAlignment="Center" Binding.SourceUpdated="gps_indicated_altitude_SourceUpdated">8</Paragraph>
-                                </TableCell>
-                                <TableCell Name="indicator_internal_roll">
-                                    <Paragraph FontSize="20" FontStyle="Italic" TextAlignment="Center" Binding.SourceUpdated="indicator_internal_roll_SourceUpdated"></Paragraph>
-                                </TableCell>
-                                <TableCell Name="indicator_internal_pitch">
-                                    <Paragraph FontSize="20" FontStyle="Italic" TextAlignment="Center" Binding.SourceUpdated="indicator_internal_pitch_SourceUpdated"></Paragraph>
-                                </TableCell>
-                                <TableCell Name="altimeter_indicated_altitude">
-                                    <Paragraph FontSize="20" FontStyle="Italic" TextAlignment="Center" Binding.SourceUpdated="altimeter_indicated_altitude_SourceUpdated"></Paragraph>
-                                </TableCell>
-                            </TableRow>
-                        </TableRowGroup>
-                    </Table>
-                </FlowDocument>
-            </FlowDocumentReader>
-        </Button>
-    </Grid>
+        Title="MainWindow" Height="680.00" Width="1100.000">
+    <Border Padding="10">
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="368"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="1" RenderTransformOrigin="0.48,0.454" Grid.ColumnSpan="2" Margin="1,0,0.333,-0.333">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="250"/>
+                    <RowDefinition Height="77*"/>
+                    <RowDefinition Height="304*"/>
+                </Grid.RowDefinitions>
+                <Button Margin ="310,0,10.334,10" Grid.Row="0" Content="TunedBoard"/>
+                <Grid Grid.Row="1" HorizontalAlignment="Center" Margin="293,10,-26.666,-10.333" Grid.RowSpan="2" Width="453">
+                    <controls:MyJoystick Loaded="MyJoystick_Loaded" RenderTransformOrigin="0.498,0.746" Margin="42,22,0,10" HorizontalAlignment="Left" Width="401"/>
+                </Grid>
+                <Grid Grid.Row="0" Margin="0,0,0.334,0">
+                    <controls:TunedBoard  RenderTransformOrigin="0.5,0.5" Margin="313,0,0.999,-31" Height="281" VerticalAlignment="Top">
+                    </controls:TunedBoard>
+                </Grid>
+                <Grid Grid.Column="0" Margin="0,0,0.334,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0*"/>
+                        <RowDefinition Height="61*"/>
+                        <RowDefinition Height="64*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="32*">
+                        </ColumnDefinition>
+                        <ColumnDefinition Width="13*"/>
+
+                    </Grid.ColumnDefinitions>
+                    <controls:Map Margin="-367,-13,194.333,-375" Loaded="Map_Loaded" RenderTransformOrigin="0.495,0.502" Height="638" VerticalAlignment="Top" HorizontalAlignment="Right" Width="684" Grid.Row="1" Grid.RowSpan="2"/>
+                </Grid>
+            </Grid>
+
+        </Grid>
+    </Border>
 </Window>
