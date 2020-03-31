@@ -1,6 +1,8 @@
-﻿using System;
+﻿  
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -24,19 +26,18 @@ namespace FlightSimulatorWpf
         public MainWindow()
         {
             InitializeComponent();
-            vm = new SimulatorViewModel(new FlyModel(new FlyTelnetClient()));
+            vm = new SimulatorViewModel(new FlyModel(new TelnetClient()));
             DataContext = vm;
 
-        }
 
-        private void MyJoystick_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Map_Loaded(object sender, RoutedEventArgs e)
-        {
+            InitializeComponent();
+            IModel model = new FlyModel(new TelnetClient());
+            model.connect();
+            model.start();
+            SimulatorViewModel viewModelSimulator = new SimulatorViewModel(model);
+            TunedBoardView.DataContext = viewModelSimulator.tb_vm;
 
         }
+
     }
 }

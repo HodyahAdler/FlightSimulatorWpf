@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 namespace FlightSimulatorWpf
 {
     class SimulatorViewModel {
-        IViewModel tb_vm;
-        IViewModel m_vm;
-        IViewModel j_vm;
+        public IViewModel tb_vm;
+        public IViewModel m_vm;
+        public IViewModel j_vm;
        
 
         public SimulatorViewModel(IModel m)

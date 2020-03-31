@@ -24,7 +24,7 @@
         <Border>
             <m:Map CredentialsProvider= "AtjyC-xwHpELdI2Erh5zCJ82CbnB06WQPXyWIJsL2hW58TcrZLqpGn2bfUTqSRoF" Mode="AerialWithLabels"
                HorizontalContentAlignment="Left" 
-               Center="32.006833306, 34.885329792" ZoomLevel ="10" Grid.ColumnSpan="2" Margin="0,0,0,-0.2"/>
+               Center="32.006833306, 34.885329792" ZoomLevel ="10" Grid.ColumnSpan="2" Margin="10,10,-10,-11.667"/>
         </Border>
         <m:Pushpin Template="{StaticResource airPlane}" Location="32.006833306, 34.885329792"/>
     </Grid>

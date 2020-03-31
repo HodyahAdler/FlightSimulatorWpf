@@ -12,6 +12,7 @@ namespace FlightSimulatorWpf
         private IModel model;
 
         public event PropertyChangedEventHandler PropertyChanged;
+
         public TunedBoardViewModel(IModel m)
         {
             this.model = m;
@@ -20,10 +21,7 @@ namespace FlightSimulatorWpf
                 NotifyPropertyChanged("VM_" + e.PropertyName);
             };
         }
-
-
-        // from Model Properties
-        /*public double VM_HeadingDeg
+        public double VM_HeadingDeg
         {
             get { return model.HeadingDeg; }
         }
@@ -54,7 +52,7 @@ namespace FlightSimulatorWpf
         public double VM_AltimeterAltitude
         {
             get { return model.AltimeterAltitude; }
-        }*/
+        }
 
         public void NotifyPropertyChanged(string PropertyName)
         {

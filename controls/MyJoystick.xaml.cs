@@ -25,14 +25,5 @@ namespace FlightSimulatorWpf.controls
             InitializeComponent();
         }
 
-        private void Joystick_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-
-        }
     }
 }

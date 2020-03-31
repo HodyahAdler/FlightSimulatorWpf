@@ -11,7 +11,6 @@ namespace FlightSimulatorWpf
     {
         private IModel model;
 
-        //private IModel model;
         private double longitude;
         private double latitude;
 

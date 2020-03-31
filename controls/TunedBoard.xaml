@@ -4,82 +4,62 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FlightSimulatorWpf.controls"
-             mc:Ignorable="d" d:DesignWidth="350" Background="White" Height="281">
+             mc:Ignorable="d" 
+             d:DesignWidth="400" Background="White" Height="320">
     <Grid>
-        <Button x:Name="TunedBoardGraph"
-                Background="WhiteSmoke" HorizontalAlignment="Center">
-            <FlowDocumentReader Width="350" Height="281" FontFamily="Bernard MT Condensed" >
-                <FlowDocument >
-                    <Table CellSpacing="5" >
-                        <TableRowGroup >
-                            <TableRow Background="#FF0FA7D8">
-                                <TableCell TextAlignment="Center" ColumnSpan="4" >
-                                    <Paragraph FontSize="12pt" FontWeight="UltraBlack" >Tuned Board</Paragraph>
-                                </TableCell>
-                            </TableRow>
-                            <TableRow Background="#FFFAFC2B" FontFamily="Rockwell">
-                                <TableCell TextAlignment="Center" >
-                                    <Paragraph  FontSize="9pt" FontWeight="UltraBlack" Padding="1" TextIndent="1" OverridesDefaultStyle="True">heading deg</Paragraph>
-                                </TableCell>
-                                <TableCell TextAlignment="Center">
-                                    <Paragraph FontSize="9pt" FontWeight="UltraBlack" Padding="1" TextIndent="1" OverridesDefaultStyle="True">vertical speed</Paragraph>
-                                </TableCell>
-                                <TableCell>
-                                    <Paragraph FontSize="9pt" FontWeight="UltraBlack" Padding="1" TextIndent="1" OverridesDefaultStyle="True" >ground speed</Paragraph>
-                                </TableCell>
-                                <TableCell>
-                                    <Paragraph FontSize="9pt" FontWeight="UltraBlack" Padding="1" TextIndent="1" OverridesDefaultStyle="True" >indicator indicated speed</Paragraph>
-                                </TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell Name="heading_deg">
-                                    <Paragraph FontSize="20" FontStyle="Italic" TextAlignment="Center" Binding.SourceUpdated="heading_deg_SourceUpdated"></Paragraph>
-                                </TableCell>
-                                <TableCell Name="vertical_speed">
-                                    <Paragraph FontSize="20" FontStyle="Italic" TextAlignment="Center" Binding.SourceUpdated="vartical_speed_SourceUpdated"></Paragraph>
-                                </TableCell>
-                                <TableCell Name="ground_speed">
-                                    <Paragraph FontSize="20" FontStyle="Italic" TextAlignment="Center" Binding.SourceUpdated="ground_speed_SourceUpdated"></Paragraph>
-                                </TableCell>
-                                <TableCell Name="indicator_indicated_speed">
-                                    <Paragraph FontSize="20" FontStyle="Italic" TextAlignment="Center" Binding.SourceUpdated="indicator_indicated_speed_SourceUpdated"></Paragraph>
-                                </TableCell>
-                            </TableRow>
-                            <TableRow FontSize="10">
-                                <TableCell/>
-                            </TableRow>
-                            <TableRow Background="#FFFAFC2B" FontFamily="Rockwell" FontWeight="UltraBlack">
-                                <TableCell>
-                                    <Paragraph FontSize="9pt" FontWeight="UltraBlack" Padding="1" TextIndent="1" OverridesDefaultStyle="True" >gps indicated altitude</Paragraph>
-                                </TableCell>
-                                <TableCell>
-                                    <Paragraph FontSize="9pt" FontWeight="UltraBlack" Padding="1" TextIndent="1" OverridesDefaultStyle="True" >indicator internal roll</Paragraph>
-                                </TableCell>
-                                <TableCell>
-                                    <Paragraph FontSize="9pt" FontWeight="UltraBlack" Padding="1" TextIndent="1" OverridesDefaultStyle="True" >indicator internal pitch</Paragraph>
-                                </TableCell>
-                                <TableCell>
-                                    <Paragraph FontSize="9pt" FontWeight="UltraBlack" Padding="1" TextIndent="1" OverridesDefaultStyle="True" >altimeter indicated altitude</Paragraph>
-                                </TableCell>
-                            </TableRow>
-                            <TableRow >
-                                <TableCell Name="gps_indicated_altitude">
-                                    <Paragraph FontSize="20" FontStyle="Italic" TextAlignment="Center" Binding.SourceUpdated="gps_indicated_altitude_SourceUpdated"></Paragraph>
-                                </TableCell>
-                                <TableCell Name="indicator_internal_roll">
-                                    <Paragraph FontSize="20" FontStyle="Italic" TextAlignment="Center" Binding.SourceUpdated="indicator_internal_roll_SourceUpdated"></Paragraph>
-                                </TableCell>
-                                <TableCell Name="indicator_internal_pitch">
-                                    <Paragraph FontSize="20" FontStyle="Italic" TextAlignment="Center" Binding.SourceUpdated="indicator_internal_pitch_SourceUpdated"></Paragraph>
-                                </TableCell>
-                                <TableCell Name="altimeter_indicated_altitude">
-                                    <Paragraph FontSize="20" FontStyle="Italic" TextAlignment="Center" Binding.SourceUpdated="altimeter_indicated_altitude_SourceUpdated"></Paragraph>
-                                </TableCell>
-                            </TableRow>
-                        </TableRowGroup>
-                    </Table>
-                </FlowDocument>
-            </FlowDocumentReader>
-        </Button>
+        <StackPanel Grid.Row="8">
+            <StackPanel Background="DeepSkyBlue">
+                <TextBlock  FontSize="20" FontWeight="UltraBlack" 
+                       Padding="1" Text="Tuned Board" HorizontalAlignment="Center"/>
+            </StackPanel>
+            <TextBlock Text="heading deg" FontWeight="UltraBlack" Padding="1" HorizontalAlignment="Center" FontSize="15"/>
+            <ProgressBar Name="headingDeg" Value="{Binding VM_HeadingDeg, Mode=OneWay}"
+                         HorizontalAlignment="Left" Maximum="400" Padding="6" Width="400"
+                         Height="10" Margin="5,2,5,0" Foreground="Yellow" />
+            <TextBlock Text="{Binding ElementName=headingDeg, Path=Value}" FontWeight="ExtraBlack"
+                       HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-14,0,0"/>
+            <TextBlock Text="vertical speed" FontWeight="UltraBlack"  Padding="1" HorizontalAlignment="Center" FontSize="15"/>
+            <ProgressBar x:Name="verticalSpeed" Value="{Binding VM_VerticalSpeed, Mode=OneWay}"
+                         HorizontalAlignment="Left" Maximum="400" Width="400" Padding="6" 
+                         Height="10" Margin="5,2,5,0" Foreground="BlueViolet"/>
+            <TextBlock Text="{Binding ElementName=verticalSpeed, Path=Value}" FontWeight="ExtraBlack"
+                       HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-14,0,0"/>
+            <TextBlock Text="ground speed" FontWeight="UltraBlack" Padding="1" HorizontalAlignment="Center" FontSize="15"/>
+            <ProgressBar x:Name="groundSpeed" Value="{Binding VM_GroundSpeed, Mode=OneWay}"
+                         HorizontalAlignment="Left" Maximum="400" Width="400" Padding="6"
+                         Height="10" Margin="5,2,5,0" Foreground="Indigo"/>
+            <TextBlock Text="{Binding ElementName=groundSpeed, Path=Value}" FontWeight="ExtraBlack"
+                       HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-14,0,0"/>
+            <TextBlock Text="indicator indicated speed" FontWeight="UltraBlack" Padding="1" HorizontalAlignment="Center" FontSize="15"/>
+            <ProgressBar x:Name="indicatedSpeed" Value="{Binding VM_IndicatedSpeed, Mode=OneWay}"
+                         HorizontalAlignment="Left" Maximum="400" Width="400" Padding="6"
+                         Height="10" Margin="5,2,5,0" Foreground="Chocolate"/>
+            <TextBlock Text="{Binding ElementName=indicatedSpeed, Path=Value}" FontWeight="ExtraBlack"
+                       HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-14,0,0"/>
+            <TextBlock Text="gps indicated altitude" FontWeight="UltraBlack" Padding="1" HorizontalAlignment="Center" FontSize="15"/>
+            <ProgressBar x:Name="gpsAltitude" Value="{Binding VM_GpsAltitude, Mode=OneWay}"
+                         HorizontalAlignment="Left" Maximum="400" Width="400" Padding="6"
+                         Height="10" Margin="5,2,5,0" Foreground="LightSkyBlue"/>
+            <TextBlock Text="{Binding ElementName=gpsAltitude, Path=Value}" FontWeight="ExtraBlack"
+                       HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-14,0,0"/>
+            <TextBlock Text="indicator internal roll" FontWeight="UltraBlack" Padding="1" HorizontalAlignment="Center" FontSize="15"/>
+            <ProgressBar x:Name="internalRoll" Value="{Binding VM_InternalRoll, Mode=OneWay}"
+                         HorizontalAlignment="Left" Maximum="400" Width="400" Padding="6"
+                         Height="10" Margin="5,2,5,0" Foreground="LightSeaGreen"/>
+            <TextBlock Text="{Binding ElementName=internalRoll, Path=Value}" FontWeight="ExtraBlack"
+                       HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-14,0,0"/>
+            <TextBlock Text="indicator internal pitch" FontWeight="UltraBlack" Padding="1" HorizontalAlignment="Center" FontSize="15"/>
+            <ProgressBar x:Name="internalPitch" Value="{Binding VM_InternalPitch, Mode=OneWay}"
+                         HorizontalAlignment="Left" Maximum="400" Width="400" Padding="6"
+                         Height="10" Margin="5,2,5,0" Foreground="Navy"/>
+            <TextBlock Text="{Binding ElementName=internalPitch, Path=Value }" FontWeight="ExtraBlack"
+                       HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-14,0,0"/>
+            <TextBlock Text="altimeter indicated altitude" FontWeight="UltraBlack" Padding="1" HorizontalAlignment="Center" FontSize="15"/>
+            <ProgressBar x:Name="altimeterAltitude" Value="{Binding VM_AltimeterAltitude, Mode=OneWay}"
+                         HorizontalAlignment="Left" Maximum="400" Width="400" Padding="6"
+                         Height="10" Margin="5,2,5,0" Foreground="Fuchsia"/>
+            <TextBlock Text="{Binding ElementName=altimeterAltitude, Path=Value}" FontWeight="ExtraBlack"
+                       HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-14,0,0"/>
+        </StackPanel>
     </Grid>
 </UserControl>

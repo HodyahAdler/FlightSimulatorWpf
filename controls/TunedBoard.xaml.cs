@@ -24,45 +24,5 @@ namespace FlightSimulatorWpf.controls
 		{
 			InitializeComponent();
 		}
-		private void heading_deg_SourceUpdated(object sender, DataTransferEventArgs e)
-		{
-			int x = 0;
-			sender = x;
-		}
-		private void vartical_speed_SourceUpdated(object sender, DataTransferEventArgs e)
-		{
-			int x = 0;
-			sender = x;
-		}
-		private void ground_speed_SourceUpdated(object sender, DataTransferEventArgs e)
-		{
-			int x = 0;
-			sender = x;
-		}
-		private void indicator_indicated_speed_SourceUpdated(object sender, DataTransferEventArgs e)
-		{
-			int x = 0;
-			sender = x;
-		}
-		private void gps_indicated_altitude_SourceUpdated(object sender, DataTransferEventArgs e)
-		{
-			int x = 0;
-			sender = x;
-		}
-		private void indicator_internal_roll_SourceUpdated(object sender, DataTransferEventArgs e)
-		{
-			int x = 0;
-			sender = x;
-		}
-		private void indicator_internal_pitch_SourceUpdated(object sender, DataTransferEventArgs e)
-		{
-			int x = 0;
-			sender = x;
-		}
-		private void altimeter_indicated_altitude_SourceUpdated(object sender, DataTransferEventArgs e)
-		{
-			int x = 0;
-			sender = x;
-		}
 	}
 }
