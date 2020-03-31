@@ -16,21 +16,21 @@
                 <ColumnDefinition/>
                 <ColumnDefinition Width="368"/>
             </Grid.ColumnDefinitions>
-
+            <Grid Grid.Row="0" Margin="0,0,0.334,0">
+                <controls:TunedBoard x:Name="TunedBoardView"  RenderTransformOrigin="0.5,0.5" Margin="685,-11,-722.667,0" 
+                                     Height="331" VerticalAlignment="Top"/>
+            </Grid>
             <Grid Grid.Column="1" RenderTransformOrigin="0.48,0.454" Grid.ColumnSpan="2" Margin="1,0,0.333,-0.333">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="250"/>
                     <RowDefinition Height="77*"/>
                     <RowDefinition Height="304*"/>
                 </Grid.RowDefinitions>
-                <Button Margin ="310,0,10.334,10" Grid.Row="0" Content="TunedBoard"/>
+                <Button Margin ="-121,10,441.334,0" Grid.Row="0" Content="TunedBoard"/>
                 <Grid Grid.Row="1" HorizontalAlignment="Center" Margin="293,10,-26.666,-10.333" Grid.RowSpan="2" Width="453">
-                    <controls:MyJoystick Loaded="MyJoystick_Loaded" RenderTransformOrigin="0.498,0.746" Margin="42,32,0,0" HorizontalAlignment="Left" Width="401"/>
+                    <controls:MyJoystick x:Name="joystickView" RenderTransformOrigin="0.498,0.746" Margin="42,48,0,-16" HorizontalAlignment="Left" Width="401"/>
                 </Grid>
-                <Grid Grid.Row="0" Margin="0,0,0.334,0">
-                    <controls:TunedBoard  RenderTransformOrigin="0.5,0.5" Margin="313,0,-0.001,-31" Height="281" VerticalAlignment="Top" Loaded="TunedBoard_Loaded">
-                    </controls:TunedBoard>
-                </Grid>
+
                 <Grid Grid.Column="0" Margin="0,0,0.334,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="0*"/>
@@ -43,7 +43,10 @@
                         <ColumnDefinition Width="13*"/>
 
                     </Grid.ColumnDefinitions>
-                    <controls:Map Margin="-367,-13,194.333,-393" Loaded="Map_Loaded" RenderTransformOrigin="0.495,0.502" Height="656" VerticalAlignment="Top" HorizontalAlignment="Right" Width="684" Grid.Row="1" Grid.RowSpan="2"/>
+                    <controls:Map x:Name="mapView" Margin="-378,-21,189.333,-407"
+                                  RenderTransformOrigin="0.495,0.502" Height="678" 
+                                  VerticalAlignment="Top" HorizontalAlignment="Right"
+                                  Width="700" Grid.RowSpan="3"/>
                 </Grid>
             </Grid>
 

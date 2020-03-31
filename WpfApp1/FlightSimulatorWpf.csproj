@@ -92,13 +92,13 @@
       <DependentUpon>TunedBoard.xaml</DependentUpon>
     </Compile>
     <Compile Include="flyModel.cs" />
+    <Compile Include="JoystickViewModel.cs" />
+    <Compile Include="MapViewModel.cs.cs" />
     <Compile Include="TelnetClient.cs" />
-    <Compile Include="INotifyPropertyChanged.cs" />
     <Compile Include="IModel.cs" />
     <Compile Include="IViewModel.cs" />
     <Compile Include="SimulatorViewModel.cs" />
-    <Compile Include="TunedBoard.cs" />
-    <Compile Include="TunedBoardSimple.cs" />
+    <Compile Include="TunedBoardViewModel.cs" />
     <Page Include="controls\Joystick.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

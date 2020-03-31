@@ -39,6 +39,7 @@ namespace FlightSimulatorWpf
 				byte[] buffer = new byte[1024];
 				this.client.GetStream().Read(buffer, 0, 1024);
 				String information = Encoding.ASCII.GetString(buffer, 0, buffer.Length);
+				try { Double.Parse(information); } catch(Exception e) { return "0"; }
 				return information;
 			} catch (Exception e) {disconnect(); throw new notSeccsedSendTheMassage(); }
 		}

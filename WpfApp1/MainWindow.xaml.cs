@@ -34,12 +34,9 @@ namespace FlightSimulatorWpf
 				}
 				client.close();
 		*/
-			
-							flyModel flyModel = new flyModel();
-							flyModel.connect();
-							flyModel.start();
 
-							flyModel.disconnect();
+
+		//					flyModel.disconnect();
 				
 		}
 
@@ -49,21 +46,11 @@ namespace FlightSimulatorWpf
 		public MainWindow()
 		{
 			InitializeComponent();
-		}
-
-		private void MyJoystick_Loaded(object sender, RoutedEventArgs e)
-		{
-
-		}
-
-		private void Map_Loaded(object sender, RoutedEventArgs e)
-		{
-
-		}
-
-		private void TunedBoard_Loaded(object sender, RoutedEventArgs e)
-		{
-
+			IModel model = new flyModel();
+			model.connect();
+			model.start();
+			SimulatorViewModel viewModelSimultor = new SimulatorViewModel(model);
+			TunedBoardView.DataContext = viewModelSimultor.tb_vm;
 		}
 	}
 }

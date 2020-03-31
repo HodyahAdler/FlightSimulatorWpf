@@ -29,6 +29,9 @@ namespace FlightSimulatorWpf
 		private bool stop = false;
 		private Thread updateThread;
 		private Dictionary<string, flyData> valueMap;
+
+		
+
 		/**
 		private double headingDeg;
 		private double verticalSpeed;
@@ -39,7 +42,8 @@ namespace FlightSimulatorWpf
 			private double internalPitch;
 			private double altimeterAltitude;
 			*/
-		public event PropertyChangedEventHandler PropertyChanged;
+
+
 		public flyModel()
 		{
 			//read value
@@ -59,9 +63,10 @@ namespace FlightSimulatorWpf
 			valueMap.Add("aileron", new flyData("/controls/flight/aileron", "0", false));
 			valueMap.Add("elevator", new flyData("/controls/flight/elevator", "0", false));
 			valueMap.Add("rudder", new flyData("/controls/flight/rudder", "0", false));
-
+			
 			this.clientServer = new TelnetClient();
 		}
+		public event PropertyChangedEventHandler PropertyChanged;
 		public void connect(string ip, int port){ this.clientServer.connect(ip, port); }
 		public void connect(){ this.clientServer.connect(); }
 		public void disconnect()
@@ -78,19 +83,20 @@ namespace FlightSimulatorWpf
 				{
 					try
 					{
-						foreach (string key in valueMap.Keys)
-						{
-							if (this.valueMap[key].Iread)
+							foreach (string key in valueMap.Keys)
 							{
-								//need check if 10 second not have anser
-								//this.valueMap[key].value = (this.clientServer.read(this.valueMap[key].addres));
-								upDateSetProperty(key, Double.Parse(this.clientServer.read(this.valueMap[key].addres)));
-								//todo need do somthing?
-								//if ((this.valueMap[key].value.ToString).Equals("ERR")) { }
-								//								Console.WriteLine(key + ""+ this.valueMap[key].value);
+								if (this.valueMap[key].Iread)
+								{
+									//need check if 10 second not have anser
+									//this.valueMap[key].value = (this.clientServer.read(this.valueMap[key].addres));
+									upDateSetProperty(key, Double.Parse(this.clientServer.read(this.valueMap[key].addres)));
+									//todo need do somthing?
+									//if ((this.valueMap[key].value.ToString).Equals("ERR")) { }
+									//								Console.WriteLine(key + ""+ this.valueMap[key].value);
+								}
+								else { this.clientServer.writh(this.valueMap[key].addres); }
 							}
-							else { this.clientServer.writh(this.valueMap[key].addres); }
-						}
+
 					}
 					catch (Exception error) { throw new NotSeccsedTookWithServer(); }
 					Thread.Sleep(250);
