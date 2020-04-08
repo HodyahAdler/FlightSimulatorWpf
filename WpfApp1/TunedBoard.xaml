@@ -13,7 +13,7 @@
                        Padding="1" Text="Tuned Board" HorizontalAlignment="Center"/>
             </StackPanel>
             <TextBlock Text="heading deg" FontWeight="UltraBlack" Padding="1" HorizontalAlignment="Center" FontSize="15"/>
-            <ProgressBar Name="headingDeg" Value="{Binding VM_HeadingDeg, Mode=OneWay}"
+            <ProgressBar Name="headingDeg" Value="{Binding VM_GroundSpeed, Mode=OneWay}"
                          HorizontalAlignment="Left" Maximum="400" Padding="6" Width="400"
                          Height="10" Margin="5,2,5,0" Foreground="Yellow" />
             <TextBlock Text="{Binding ElementName=headingDeg, Path=Value}" FontWeight="ExtraBlack"

@@ -27,7 +27,8 @@
             <Slider x:Name="AileronSlider" Background="Tan" Grid.Column="1" Grid.Row="0" Margin ="-30,0,0,0" Minimum="-1" Maximum="1" Value="0.5" TickPlacement="BottomRight" TickFrequency="0.1" Height="30" Width="250"/>
         </StackPanel>
 
-        <local:Joystick x:Name="MyRudder" RenderTransformOrigin="0.5,0.5" Grid.Column="1" Grid.Row="1" VerticalContentAlignment="Top" Margin ="-40 -30 0 0">
+        <local:Joystick x:Name="MyRudder" RenderTransformOrigin="0.5,0.5" Grid.Column="1" Grid.Row="1" 
+                        VerticalContentAlignment="Top" Margin ="-40 -30 0 0">
             <local:Joystick.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform ScaleX="0.6" ScaleY="0.6"/>

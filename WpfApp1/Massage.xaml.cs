@@ -1,5 +1,4 @@
-﻿using Microsoft.Maps.MapControl.WPF;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,13 +16,29 @@ using System.Windows.Shapes;
 namespace FlightSimulatorWpf.controls
 {
 	/// <summary>
-	/// Interaction logic for map.xaml
+	/// Interaction logic for Massage.xaml
 	/// </summary>
-	public partial class Map : UserControl
+	public partial class Massage : UserControl
 	{
-		public Map()
+		String ip;
+		String port;
+		public Massage()
 		{
 			InitializeComponent();
+		}
+		public String Ip { get { return this.ip; } }
+		public String Port { get { return this.port; } }
+
+
+
+		private void Button_MouseMove(object sender, MouseEventArgs e)
+		{
+
+		}
+
+		private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+		{
+
 		}
 	}
 }
