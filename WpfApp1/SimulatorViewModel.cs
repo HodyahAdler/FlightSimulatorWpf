@@ -9,16 +9,16 @@ namespace FlightSimulatorWpf
 {
     class SimulatorViewModel
     {
-        public IViewModel tb_vm;
-        public IViewModel m_vm;
-        public IViewModel j_vm;
+        public IViewModel vm_dashBoard;
+        public IViewModel vm_map;
+        public IViewModel vm_joystick;
 
 
         public SimulatorViewModel(IModel m)
         {
-            tb_vm = new TunedBoardViewModel(m);
-            m_vm = new MapViewModel(m);
-            j_vm = new JoystickViewModel(m);
+            vm_dashBoard = new TunedBoardViewModel(m);
+            vm_map = new MapViewModel(m);
+            vm_joystick = new JoystickViewModel(m);
         }
 
     }

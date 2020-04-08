@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace FlightSimulatorWpf
 {
-   public interface IViewModel : INotifyPropertyChanged
+    public interface IViewModel : INotifyPropertyChanged
     {
         void NotifyPropertyChanged(string PropertyName);
     }
-    
 }

@@ -17,7 +17,6 @@ namespace FlightSimulatorWpf
         private double elevator;
 
         public event PropertyChangedEventHandler PropertyChanged;
-
         public JoystickViewModel(IModel m)
         {
             this.model = m;

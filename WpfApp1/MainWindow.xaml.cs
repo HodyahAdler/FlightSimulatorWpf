@@ -43,14 +43,15 @@ namespace FlightSimulatorWpf
 		/// <summary>
 		/// Interaction logic for MainWindow.xaml
 		/// </summary>
-		public MainWindow()
+		public MainWindow(string ip, string port)
 		{
 			InitializeComponent();
-			IModel model = new flyModel();
-			model.connect();
+			IModel model = new FlyModel(new TelnetClient());
+			model.connect(ip, port);
 			model.start();
 			SimulatorViewModel viewModelSimultor = new SimulatorViewModel(model);
-			TunedBoardView.DataContext = viewModelSimultor.tb_vm;
+			TunedBoardView.DataContext = viewModelSimultor.vm_dashBoard;
+			mapView.DataContext = viewModelSimultor.vm_map;
 		}
 	}
 }

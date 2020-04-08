@@ -1,79 +1,87 @@
-﻿using System;
+﻿using Microsoft.Maps.MapControl.WPF;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms.Integration;
+using System.Windows;
+using System.Windows.Controls;
+
 
 namespace FlightSimulatorWpf
 {
-	public class flyData
+
+	public class FlyData
 	{
-		public flyData(String addres, String value , bool Iread)
+		public FlyData(String addres, String value)
 		{
 			this.addres = addres;
 			this.value = value;
-			this.Iread = Iread;
 		}
 		public String addres { get; set; }
 		public String value { get; set; }
-		public bool Iread { get; set; }
 		public Mutex mutex = new Mutex();
 	}
-	class flyModel : IModel
+	class FlyModel : IModel
 	{
-		class NotSeccsedTookWithServer : Exception { };
-		private ITelnetClient clientServer;
+		enum Error : int { notCanConnect, getErrFromServer, communicationSlowly, unepctedErr, communityProblemTryFix };
+		enum variables : int { longitude, latitude, indicatedSpeed, gpsAltitude, internalRoll,
+								internalPitch, altimeterAltitude, headingDeg, groundSpeed, verticalSpeed }
+		class NotSuccessedTookWithServer : Exception { };
+		private ITelnetClient telnetClient;
 		private bool stop = false;
 		private Thread updateThread;
-		private Dictionary<string, flyData> valueMap;
-
-		
-
-		/**
-		private double headingDeg;
-		private double verticalSpeed;
-		private double groundSpeed;
-			private double indicatedSpeed;
-			private double gpsAltitude;
-			private double internalRoll;
-			private double internalPitch;
-			private double altimeterAltitude;
-			*/
-
-
-		public flyModel()
+		private Dictionary<string, FlyData> valueMap;
+		public event PropertyChangedEventHandler PropertyChanged;
+		private List<bool> errorMassage;
+		private List<bool> errorVariables;
+		//todo the problem: how i can update how value is err? and error limit
+		public FlyModel(ITelnetClient telClient)
 		{
 			//read value
-			valueMap = new Dictionary<string, flyData>(); 
-			valueMap.Add("latitude", new flyData("/position/latitude-deg", "0", true));
-			valueMap.Add("longitude", new flyData("/position/longitude-deg", "0", true));
-			valueMap.Add("indicatedSpeed", new flyData("/instrumentation/airspeed-indicator/indicated-speed-kt", "0", true));
-			valueMap.Add("gpsAltitude", new flyData("/instrumentation/gps/indicated-altitude-ft", "0", true));
-			valueMap.Add("internalRoll", new flyData("/instrumentation/attitude-indicator/internal-roll-deg", "0", true));
-			valueMap.Add("internalPitch", new flyData("/instrumentation/attitude-indicator/internal-pitch-deg", "0", true));
-			valueMap.Add("altimeterAltitude", new flyData("/instrumentation/altimeter/indicated-altitude-ft", "0", true));
-			valueMap.Add("headingDeg", new flyData("/instrumentation/heading-indicator/indicated-heading-deg", "0", true));
-			valueMap.Add("groundSpeed", new flyData("/instrumentation/gps/indicated-ground-speed-kt", "0", true));
-			valueMap.Add("verticalSpeed", new flyData("/instrumentation/gps/indicated-vertical-speed", "0", true));
+			valueMap = new Dictionary<string, FlyData>();
+			valueMap.Add("longitude", new FlyData("/position/longitude-deg", "0"));
+			valueMap.Add("latitude", new FlyData("/position/latitude-deg", "0"));
+			valueMap.Add("indicatedSpeed", new FlyData("/instrumentation/airspeed-indicator/indicated-speed-kt", "0"));
+			valueMap.Add("gpsAltitude", new FlyData("/instrumentation/gps/indicated-altitude-ft", "0"));
+			valueMap.Add("internalRoll", new FlyData("/instrumentation/attitude-indicator/internal-roll-deg", "0"));
+			valueMap.Add("internalPitch", new FlyData("/instrumentation/attitude-indicator/internal-pitch-deg", "0"));
+			valueMap.Add("altimeterAltitude", new FlyData("/instrumentation/altimeter/indicated-altitude-ft", "0"));
+			valueMap.Add("headingDeg", new FlyData("/instrumentation/heading-indicator/indicated-heading-deg", "0"));
+			valueMap.Add("groundSpeed", new FlyData("/instrumentation/gps/indicated-ground-speed-kt", "0"));
+			valueMap.Add("verticalSpeed", new FlyData("/instrumentation/gps/indicated-vertical-speed", "0"));
 			// writh value 
-			valueMap.Add("throttle", new flyData("/controls/engines/current-engine/throttle", "0", false));
-			valueMap.Add("aileron", new flyData("/controls/flight/aileron", "0", false));
-			valueMap.Add("elevator", new flyData("/controls/flight/elevator", "0", false));
-			valueMap.Add("rudder", new flyData("/controls/flight/rudder", "0", false));
-			
-			this.clientServer = new TelnetClient();
+			valueMap.Add("throttle", new FlyData("/controls/engines/current-engine/throttle", "0"));
+			valueMap.Add("aileron", new FlyData("/controls/flight/aileron", "0"));
+			valueMap.Add("elevator", new FlyData("/controls/flight/elevator", "0"));
+			valueMap.Add("rudder", new FlyData("/controls/flight/rudder", "0"));
+			this.errorMassage = new List<bool> { false, false, false, false, false}; 
+			stop = false;
+			this.telnetClient = telClient;
 		}
-		public event PropertyChangedEventHandler PropertyChanged;
-		public void connect(string ip, int port){ this.clientServer.connect(ip, port); }
-		public void connect(){ this.clientServer.connect(); }
+		public void connect(string ip, string port) 
+		{
+			if(ip.Length == 0) {ip = ConfigurationManager.AppSettings["ip"].ToString(); }
+			if(port.Length == 0) { port = ConfigurationManager.AppSettings["port"].ToString(); }
+			this.telnetClient.connect(ip, port); 
+		}
+		public void connect() { 
+			try { this.telnetClient.connect(); }
+			catch {
+				try { CommunityProblemTryFix = true; connect(); }
+				catch (Exception) { NotCanConnect = true; /*check that this ok if not connect befor*/ disconnect(); }
+			} 
+		}
 		public void disconnect()
 		{
 			stop = true;
 			//todo not need stop the thread? 
-			this.clientServer.disconnect();
+			this.telnetClient.disconnect();
 		}
 		public void start()
 		{
@@ -81,41 +89,42 @@ namespace FlightSimulatorWpf
 			{
 				while (!stop)
 				{
-					try
-					{
-							foreach (string key in valueMap.Keys)
-							{
-								if (this.valueMap[key].Iread)
-								{
-									//need check if 10 second not have anser
-									//this.valueMap[key].value = (this.clientServer.read(this.valueMap[key].addres));
-									upDateSetProperty(key, Double.Parse(this.clientServer.read(this.valueMap[key].addres)));
-									//todo need do somthing?
-									//if ((this.valueMap[key].value.ToString).Equals("ERR")) { }
-									//								Console.WriteLine(key + ""+ this.valueMap[key].value);
-								}
-								else { this.clientServer.writh(this.valueMap[key].addres); }
-							}
-
-					}
-					catch (Exception error) { throw new NotSeccsedTookWithServer(); }
+					HeadingDeg = ReadFromTelnetClient("headingDeg");
+					VerticalSpeed = ReadFromTelnetClient("verticalSpeed");
+					GroundSpeed = ReadFromTelnetClient("groundSpeed");
+					IndicatedSpeed = ReadFromTelnetClient("indicatedSpeed");
+					GpsAltitude = ReadFromTelnetClient("gpsAltitude");
+					InternalRoll = ReadFromTelnetClient("internalRoll");
+					InternalPitch = ReadFromTelnetClient("internalPitch");
+					AltimeterAltitude = ReadFromTelnetClient("altimeterAltitude");
+					Latitude = ReadFromTelnetClient("latitude");
+					Longitude = ReadFromTelnetClient("longitude");
 					Thread.Sleep(250);
 				}
 			});
 			this.updateThread.Start();
 		}
 
-		public void NotifyPropertyChanged(string PropertyName)
+		public Double ReadFromTelnetClient(String variable)
 		{
-			if (this.PropertyChanged != null)
+			try
 			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(PropertyName));
+				Double value =  Convert.ToDouble(this.telnetClient.read(this.valueMap[variable].addres));
+				if (this.telnetClient.readTakeMoreTenSecond()) { CommunicationSlowly = true; }
+				return value;
 			}
+			catch (notSuccessedSendTheMassage) { CommunityProblemTryFix = true; this.connect(); }
+			catch (FormatException) { GetErrFromServer = true; }
+			catch (Exception ) { UnepctedErr = true; }
+			return Convert.ToDouble(this.valueMap[variable].value);
 		}
 
+		public void NotifyPropertyChanged(string PropertyName)
+		{
+			this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
+		}
 		public void moveJoystick(double elevator, double rudder)
 		{
-			//todo - semothing else?
 			Elevator = elevator;
 			Rudder = rudder;
 		}
@@ -125,84 +134,132 @@ namespace FlightSimulatorWpf
 			Throttle = throttle;
 			Aileron = aileron;
 		}
-		private void upDateSetProperty(String propartyName, Double value)
+		private void upDateSetProperty(String proparty, Double value)
 		{
-			this.valueMap[propartyName].mutex.WaitOne();
-			this.valueMap[propartyName].value = value.ToString();
-			this.NotifyPropertyChanged(char.ToUpper(propartyName[0]) + propartyName.Substring(1));
-			this.valueMap[propartyName].mutex.ReleaseMutex();
+			this.valueMap[proparty].mutex.WaitOne();
+			this.valueMap[proparty].value = value.ToString();
+			if (proparty.Equals("latitude") || proparty.Equals("longitude")) { this.NotifyPropertyChanged("AirPlaneLocation"); }
+			else { this.NotifyPropertyChanged(char.ToUpper(proparty[0]) + proparty.Substring(1)); }
+			this.valueMap[proparty].mutex.ReleaseMutex();
+		}
+		public void KeepLimitAndUpdate(int[] limit, Double value, String name)
+		{
+			if (value < limit[0]) { upDateSetProperty(name, limit[0]); }
+			else if (value > limit[1]) { upDateSetProperty(name, limit[1]); }
+			else { upDateSetProperty(name, value); }
 		}
 		// Properties for binding with the viewModel
+		//todo check limited of think
 		public double HeadingDeg
 		{
 			get { return Double.Parse(this.valueMap["headingDeg"].value); }
-			/**set{ upDateSetProperty("headingDeg", value) }*/
+			set { KeepLimitAndUpdate(new int[]{ 0, 360 }, value, "headingDeg"); }
 		}
 		public double VerticalSpeed
 		{
 			get { return Double.Parse(this.valueMap["verticalSpeed"].value); }
-			/**set{ upDateSetProperty("verticalSpeed", value) }*/
+			set { KeepLimitAndUpdate(new int[] { -5000,721 }, value, "verticalSpeed"); }
 		}
 		public double GroundSpeed
 		{
 			get { return Double.Parse(this.valueMap["groundSpeed"].value); }
-			/**set{ upDateSetProperty("groundSpeed", value) }*/
+			set { KeepLimitAndUpdate(new int[] { -50, 302 }, value, "groundSpeed"); }
 		}
 		public double IndicatedSpeed
 		{
 			get { return Double.Parse(this.valueMap["indicatedSpeed"].value); }
-			/**set{ upDateSetProperty("indicatedSpeed", value) }*/
+			set { KeepLimitAndUpdate(new int[] { 0, 228 }, value, "indicatedSpeed"); }
 		}
 		public double GpsAltitude
 		{
 			get { return Double.Parse(this.valueMap["gpsAltitude"].value); }
-			/**set{ upDateSetProperty("gpsAltitude", value) }*/
+			set { KeepLimitAndUpdate(new int[] { 0, 13500 }, value, "gpsAltitude"); }
+		}
+		public Location AirPlaneLocation
+		{
+			get { return new Location(this.Latitude, this.Longitude); }
 		}
 		public double InternalRoll
 		{
 			get { return Double.Parse(this.valueMap["internalRoll"].value); }
-			/**set{ upDateSetProperty("internalRoll", value) }*/
+			set{ 
+				//todo check this limit
+				upDateSetProperty("internalRoll", value); }
 		}
 		public double InternalPitch
 		{
 			get { return Double.Parse(this.valueMap["internalPitch"].value); }
-			/**set{ upDateSetProperty("internalPitch", value) }*/
+			set{ //todo check this limit
+				upDateSetProperty("internalPitch", value); }
 		}
 		public double AltimeterAltitude
 		{
 			get { return Double.Parse(this.valueMap["altimeterAltitude"].value); }
-			/**set{ upDateSetProperty("altimeterAltitude", value) }*/
+			set { KeepLimitAndUpdate(new int[] { 0, 13500 }, value, "altimeterAltitude"); }
 		}
-		
+
 		public double Latitude
 		{
 			get { return Double.Parse(this.valueMap["latitude"].value); }
-			/**set{ upDateSetProperty("latitude", value) }*/
+			set { KeepLimitAndUpdate(new int[] { -90,90 }, value, "latitude"); }
 		}
+
 		public double Longitude
 		{
 			get { return Double.Parse(this.valueMap["longitude"].value); }
-			/**set{ upDateSetProperty("longitude", value); }*/
+			set { KeepLimitAndUpdate(new int[] { -180, 180 }, value, "longitude"); }
 		}
+		
 		public double Throttle
 		{
 			get { return Double.Parse(this.valueMap["throttle"].value); }
-			set{ upDateSetProperty("throttle", value); }
+			set { KeepLimitAndUpdate(new int[] { 0, 1 }, value, "throttle");
+				this.telnetClient.write(this.valueMap["throttle"].addres); }
 		}
 		public double Aileron
 		{
 			get { return Double.Parse(this.valueMap["aileron"].value); }
-			set{ upDateSetProperty("aileron", value); }
+			set { KeepLimitAndUpdate(new int[] { -1, 1 }, value, "aileron");
+				this.telnetClient.write(this.valueMap["aileron"].addres); }
 		}
 		public double Elevator
 		{
 			get { return Double.Parse(this.valueMap["elevator"].value); }
-			set{ upDateSetProperty("elevator", value); }
+			set { KeepLimitAndUpdate(new int[] { -1, 1 }, value, "elevator");
+				this.telnetClient.write(this.valueMap["elevator"].addres); }
 		}
 		public double Rudder
 		{
 			get { return Double.Parse(this.valueMap["rudder"].value); }
-			set { upDateSetProperty("rudder", value); }
+			set { KeepLimitAndUpdate(new int[] { -1, 1 }, value, "rudder");
+				this.telnetClient.write(this.valueMap["rudder"].addres); }
 		}
+		public bool NotCanConnect { get { return this.errorMassage[(int)Error.notCanConnect]; }
+			set { this.errorMassage[(int)Error.notCanConnect] = value; } }
+		public bool GetErrFromServer { get { return this.errorMassage[(int)Error.getErrFromServer]; }
+			set { this.errorMassage[(int)Error.getErrFromServer] = value; } }
+		public bool CommunicationSlowly { get { return this.errorMassage[(int)Error.communicationSlowly]; }
+			set { this.errorMassage[(int)Error.communicationSlowly] = value; } }
+		public bool UnepctedErr { get { return this.errorMassage[(int)Error.unepctedErr]; }
+			set { this.errorMassage[(int)Error.unepctedErr] = value; }}
+		public bool CommunityProblemTryFix
+		{
+			get { return this.errorMassage[(int)Error.communityProblemTryFix]; }
+			set 
+			{
+				if (!this.errorMassage[(int)Error.communityProblemTryFix]) {
+					this.errorMassage[(int)Error.communityProblemTryFix] = value;
+				};
+			}
+		}
+		
+
+		/**
+		 * 		public void UpdateThrottle() {  }
+		public void UpdateAileron() { }
+		public void UpdateElevator() {  }
+		public void UpdateRudder() { }
+		*/
 	}
 }
+ 

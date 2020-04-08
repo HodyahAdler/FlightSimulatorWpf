@@ -3,11 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
+         xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
         xmlns:local="clr-namespace:FlightSimulatorWpf"
         xmlns:controls="clr-namespace:FlightSimulatorWpf.controls"
         mc:Ignorable="d"
         Title="MainWindow" Height="700.00" Width="1100.000">
+
     <Border Padding="10">
 
         <Grid>
@@ -18,7 +19,7 @@
             </Grid.ColumnDefinitions>
             <Grid Grid.Row="0" Margin="0,0,0.334,0">
                 <controls:TunedBoard x:Name="TunedBoardView"  RenderTransformOrigin="0.5,0.5" Margin="685,-11,-722.667,0" 
-                                     Height="331" VerticalAlignment="Top"/>
+                                     Height="331" VerticalAlignment="Top"></controls:TunedBoard>
             </Grid>
             <Grid Grid.Column="1" RenderTransformOrigin="0.48,0.454" Grid.ColumnSpan="2" Margin="1,0,0.333,-0.333">
                 <Grid.RowDefinitions>
@@ -44,9 +45,7 @@
 
                     </Grid.ColumnDefinitions>
                     <controls:Map x:Name="mapView" Margin="-378,-21,189.333,-407"
-                                  RenderTransformOrigin="0.495,0.502" Height="678" 
-                                  VerticalAlignment="Top" HorizontalAlignment="Right"
-                                  Width="700" Grid.RowSpan="3"/>
+                                  RenderTransformOrigin="0.495,0.502" Height="678" Grid.RowSpan="3" VerticalAlignment="Top"/>
                 </Grid>
             </Grid>
 
