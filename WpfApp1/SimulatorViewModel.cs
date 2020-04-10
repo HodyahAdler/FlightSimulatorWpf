@@ -16,7 +16,7 @@ namespace FlightSimulatorWpf
 
         public SimulatorViewModel(IModel m)
         {
-            vm_dashBoard = new TunedBoardViewModel(m);
+            vm_dashBoard = new DashBoardViewModel(m);
             vm_map = new MapViewModel(m);
             vm_joystick = new JoystickViewModel(m);
         }

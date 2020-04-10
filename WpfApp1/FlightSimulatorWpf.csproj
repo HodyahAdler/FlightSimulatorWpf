@@ -86,18 +86,18 @@
     <Compile Include="controls\Map.xaml.cs">
       <DependentUpon>Map.xaml</DependentUpon>
     </Compile>
-    <Compile Include="controls\Massage.xaml.cs">
-      <DependentUpon>Massage.xaml</DependentUpon>
+    <Compile Include="controls\Message.xaml.cs">
+      <DependentUpon>Message.xaml</DependentUpon>
     </Compile>
-    <Compile Include="controls\MyJoystick.xaml.cs">
-      <DependentUpon>MyJoystick.xaml</DependentUpon>
+    <Compile Include="controls\DashBoard.xaml.cs">
+      <DependentUpon>DashBoard.xaml</DependentUpon>
     </Compile>
-    <Compile Include="controls\TunedBoard.xaml.cs">
-      <DependentUpon>TunedBoard.xaml</DependentUpon>
+    <Compile Include="controls\NavigationBoard.xaml.cs">
+      <DependentUpon>NavigationBoard.xaml</DependentUpon>
     </Compile>
     <Compile Include="flyModel.cs" />
-    <Compile Include="inputUserData.xaml.cs">
-      <DependentUpon>inputUserData.xaml</DependentUpon>
+    <Compile Include="InputUserData.xaml.cs">
+      <DependentUpon>InputUserData.xaml</DependentUpon>
     </Compile>
     <Compile Include="JoystickViewModel.cs" />
     <Compile Include="MapViewModel.cs" />
@@ -105,7 +105,7 @@
     <Compile Include="IModel.cs" />
     <Compile Include="IViewModel.cs" />
     <Compile Include="SimulatorViewModel.cs" />
-    <Compile Include="TunedBoardViewModel.cs" />
+    <Compile Include="DashBoardViewModel.cs" />
     <Page Include="controls\Joystick.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -114,19 +114,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="controls\Massage.xaml">
+    <Page Include="controls\Message.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="controls\MyJoystick.xaml">
+    <Page Include="controls\DashBoard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="controls\TunedBoard.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="controls\NavigationBoard.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
-    <Page Include="inputUserData.xaml">
+    <Page Include="InputUserData.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

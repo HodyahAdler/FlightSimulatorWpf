@@ -61,13 +61,14 @@ namespace FlightSimulatorWpf
 		}
 		public void write(String asking)
 		{
-			//		try
-			//			{
-			//				byte[] reader = Encoding.ASCII.GetBytes("set" + asking + "\n");
-			//				int write = this.client.GetStream().Write(reader, 0, reader.Length);
-			//				string anser = this.client.read()
-//			}
-//		catch (Exception) { disconnect(); throw new notSuccessedSendTheMassage(); }
+			try{
+			byte[] reader = Encoding.ASCII.GetBytes("set" + asking + "\n");
+				Console.WriteLine("set" + asking + "\n");
+				this.client.GetStream().Write(reader, 0, reader.Length);
+				byte[] buffer = new byte[1024];
+				this.client.GetStream().Read(buffer, 0, 1024);
+				String information = Encoding.ASCII.GetString(buffer, 0, buffer.Length);
+			} catch (Exception) { disconnect(); throw new notSuccessedSendTheMassage(); }
 		}
 		public void disconnect()
 		{

@@ -33,6 +33,6 @@ namespace FlightSimulatorWpf
         void start();
 
         void moveJoystick(double elevator, double rudder);
-        void moveSlider(double throttle, double aileron);
+        void updateSliders(double throttle, double aileron);
     }
 }

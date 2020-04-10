@@ -23,7 +23,7 @@ namespace FlightSimulatorWpf
 	{
 		static public void MainA()
 		{
-			Console.WriteLine("hii");
+			//Console.WriteLine("hii");
 			/**
 				ClientServer client = new ClientServerSimple();
 				client.openIp();
@@ -50,8 +50,9 @@ namespace FlightSimulatorWpf
 			model.connect(ip, port);
 			model.start();
 			SimulatorViewModel viewModelSimultor = new SimulatorViewModel(model);
-			TunedBoardView.DataContext = viewModelSimultor.vm_dashBoard;
+			DashBoarddView.DataContext = viewModelSimultor.vm_dashBoard;
 			mapView.DataContext = viewModelSimultor.vm_map;
+			joystickView.DataContext = viewModelSimultor.vm_joystick;
 		}
 	}
 }

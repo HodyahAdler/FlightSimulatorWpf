@@ -18,8 +18,8 @@
                 <ColumnDefinition Width="368"/>
             </Grid.ColumnDefinitions>
             <Grid Grid.Row="0" Margin="0,0,0.334,0">
-                <controls:TunedBoard x:Name="TunedBoardView"  RenderTransformOrigin="0.5,0.5" Margin="685,-11,-722.667,0" 
-                                     Height="331" VerticalAlignment="Top"></controls:TunedBoard>
+                <controls:DashBoard x:Name="DashBoarddView"  RenderTransformOrigin="0.5,0.5" Margin="685,-11,-722.667,0" 
+                                     Height="331" VerticalAlignment="Top"></controls:DashBoard>
             </Grid>
             <Grid Grid.Column="1" RenderTransformOrigin="0.48,0.454" Grid.ColumnSpan="2" Margin="1,0,0.333,-0.333">
                 <Grid.RowDefinitions>
@@ -29,7 +29,7 @@
                 </Grid.RowDefinitions>
                 <Button Margin ="-121,10,441.334,0" Grid.Row="0" Content="TunedBoard"/>
                 <Grid Grid.Row="1" HorizontalAlignment="Center" Margin="293,10,-26.666,-10.333" Grid.RowSpan="2" Width="453">
-                    <controls:MyJoystick x:Name="joystickView" RenderTransformOrigin="0.498,0.746" Margin="42,48,0,-16" HorizontalAlignment="Left" Width="401"/>
+                    <controls:NavigationBoard x:Name="joystickView" RenderTransformOrigin="0.498,0.746" Margin="42,48,0,-16" HorizontalAlignment="Left" Width="401"/>
                 </Grid>
 
                 <Grid Grid.Column="0" Margin="0,0,0.334,0">

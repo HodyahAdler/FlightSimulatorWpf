@@ -11,10 +11,10 @@ namespace FlightSimulatorWpf
     {
         private IModel model;
 
-        private double throttle;
-        private double aileron;
-        private double rudder;
-        private double elevator;
+        private double vm_throttle;
+        private double vm_aileron;
+        private double vm_rudder;
+        private double vm_elevator;
 
         public event PropertyChangedEventHandler PropertyChanged;
         public JoystickViewModel(IModel m)
@@ -29,38 +29,45 @@ namespace FlightSimulatorWpf
         //from view Properties
         public double VM_Elevator
         {
-            get { return elevator; }
+            get { return vm_elevator; }
             set
             {
-                elevator = value;
-                model.moveJoystick(elevator, rudder);
+                vm_elevator = value;
+                model.moveJoystick(vm_elevator, vm_rudder);
             }
         }
         public double VM_Rudder
         {
-            get { return rudder; }
+            get { return vm_rudder; }
             set
             {
-                rudder = value;
-                model.moveJoystick(elevator, rudder);
+                vm_rudder = value;
+                model.moveJoystick(vm_elevator, vm_rudder);
             }
         }
         public double VM_Throttle
         {
-            get { return throttle; }
+            get { return vm_throttle; }
             set
             {
-                throttle = value;
-                model.moveSlider(throttle, aileron);
+                if (value < 0) value = 0; else if (value > 1) value = 1;
+
+                //Console.WriteLine("throt= {0}", value);
+                vm_throttle = value;
+                model.updateSliders(vm_throttle, vm_aileron);
             }
         }
         public double VM_Aileron
         {
-            get { return aileron; }
+            get { return vm_aileron; }
             set
             {
-                aileron = value;
-                model.moveSlider(throttle, aileron);
+                if (value < -1) value = -1; else if (value > 1) value = 1;
+
+                //Console.WriteLine("aile= {0}", value);
+
+                vm_aileron = value;
+                model.updateSliders(vm_throttle, vm_aileron);
             }
         }
 

@@ -126,13 +126,17 @@ namespace FlightSimulatorWpf
 		public void moveJoystick(double elevator, double rudder)
 		{
 			Elevator = elevator;
+			this.telnetClient.write(this.valueMap["elevator"].addres + " " + elevator);
 			Rudder = rudder;
+			this.telnetClient.write(this.valueMap["rudder"].addres + " " + rudder);
 		}
 
-		public void moveSlider(double throttle, double aileron)
+		public void updateSliders(double throttle, double aileron)
 		{
 			Throttle = throttle;
+			this.telnetClient.write(this.valueMap["throttle"].addres + " " + throttle);
 			Aileron = aileron;
+			this.telnetClient.write(this.valueMap["aileron"].addres + " " + aileron);
 		}
 		private void upDateSetProperty(String proparty, Double value)
 		{
@@ -213,26 +217,22 @@ namespace FlightSimulatorWpf
 		public double Throttle
 		{
 			get { return Double.Parse(this.valueMap["throttle"].value); }
-			set { KeepLimitAndUpdate(new int[] { 0, 1 }, value, "throttle");
-				this.telnetClient.write(this.valueMap["throttle"].addres); }
+			set { KeepLimitAndUpdate(new int[] { 0, 1 }, value, "throttle"); }
 		}
 		public double Aileron
 		{
 			get { return Double.Parse(this.valueMap["aileron"].value); }
-			set { KeepLimitAndUpdate(new int[] { -1, 1 }, value, "aileron");
-				this.telnetClient.write(this.valueMap["aileron"].addres); }
+			set { KeepLimitAndUpdate(new int[] { -1, 1 }, value, "aileron"); }
 		}
 		public double Elevator
 		{
 			get { return Double.Parse(this.valueMap["elevator"].value); }
-			set { KeepLimitAndUpdate(new int[] { -1, 1 }, value, "elevator");
-				this.telnetClient.write(this.valueMap["elevator"].addres); }
+			set { KeepLimitAndUpdate(new int[] { -1, 1 }, value, "elevator"); }
 		}
 		public double Rudder
 		{
 			get { return Double.Parse(this.valueMap["rudder"].value); }
-			set { KeepLimitAndUpdate(new int[] { -1, 1 }, value, "rudder");
-				this.telnetClient.write(this.valueMap["rudder"].addres); }
+			set { KeepLimitAndUpdate(new int[] { -1, 1 }, value, "rudder");}
 		}
 		public bool NotCanConnect { get { return this.errorMassage[(int)Error.notCanConnect]; }
 			set { this.errorMassage[(int)Error.notCanConnect] = value; } }
