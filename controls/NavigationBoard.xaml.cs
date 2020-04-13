@@ -1,5 +1,4 @@
-﻿using Microsoft.Maps.MapControl.WPF;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,14 +15,19 @@ using System.Windows.Shapes;
 
 namespace FlightSimulatorWpf.controls
 {
-	/// <summary>
-	/// Interaction logic for map.xaml
-	/// </summary>
-	public partial class Map : UserControl
-	{
-		public Map()
-		{
-			InitializeComponent();
-		}
-	}
+    /// <summary>
+    /// Interaction logic for NavigationBoard.xaml
+    /// </summary>
+    public partial class NavigationBoard : UserControl
+    {
+
+        public NavigationBoard()
+        {
+            InitializeComponent();
+        }
+
+
+
+
+    }
 }

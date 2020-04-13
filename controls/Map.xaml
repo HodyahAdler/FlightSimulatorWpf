@@ -11,10 +11,9 @@
     <UserControl.Resources>
         <ControlTemplate x:Key="airPlane" TargetType="m:Pushpin">
             <Grid>
-                <Rectangle Margin="0,0,-0.333,0.333" >
+                <Rectangle>
                     <Rectangle.Fill>
-                        <ImageBrush ImageSource="airplane-icon.png">
-                        </ImageBrush>
+                        <ImageBrush ImageSource="airplane-icon.png" Stretch="UniformToFill"/>
                     </Rectangle.Fill>
                 </Rectangle>
             </Grid>
@@ -23,10 +22,22 @@
     <Grid>
         <Border>
             <m:Map CredentialsProvider= "AtjyC-xwHpELdI2Erh5zCJ82CbnB06WQPXyWIJsL2hW58TcrZLqpGn2bfUTqSRoF" Mode="AerialWithLabels"
-               HorizontalContentAlignment="Left" 
-               Center="32.006833306, 34.885329792" ZoomLevel ="10" Grid.ColumnSpan="2" Margin="10,10,-10,-11.667"/>
+               HorizontalContentAlignment="Left" Center="32.006833306, 34.885329792"
+                ZoomLevel ="12" Grid.ColumnSpan="2" Margin="0,0,0,0.333">
+                <m:Pushpin Name="airPlane" Template="{StaticResource airPlane}" Location="{Binding VM_AirPlaneLocation}">
+                    <!--=<m:Pushpin.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="{Binding VM_AngleFly, Mode=OneWay}"
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </m:Pushpin.RenderTransform>
+                    /> =-->
+                </m:Pushpin>
+            </m:Map>
         </Border>
-        <m:Pushpin Template="{StaticResource airPlane}" Location="32.006833306, 34.885329792"/>
+
     </Grid>
 
 </UserControl>

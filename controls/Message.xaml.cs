@@ -1,5 +1,4 @@
-﻿using Microsoft.Maps.MapControl.WPF;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,13 +16,20 @@ using System.Windows.Shapes;
 namespace FlightSimulatorWpf.controls
 {
 	/// <summary>
-	/// Interaction logic for map.xaml
+	/// Interaction logic for Message.xaml
 	/// </summary>
-	public partial class Map : UserControl
+	public partial class Message : UserControl
 	{
-		public Map()
+
+		public Message()
 		{
 			InitializeComponent();
+			listErrorObject.Visibility = Visibility.Hidden;
+		}
+
+		private void errorInVeriable_TouchMove(object sender, TouchEventArgs e)
+		{
+			listErrorObject.Visibility = Visibility.Visible;
 		}
 	}
 }
