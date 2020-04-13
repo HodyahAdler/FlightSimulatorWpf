@@ -15,6 +15,6 @@ namespace FlightSimulatorWpf
         String read(String asking);
         void write(String asking);
         void disconnect();
-        bool readTakeMoreTenSecond();
+        bool ReadTakeMoreTenSecond { set; get; }
     }
 }

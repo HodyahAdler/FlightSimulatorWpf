@@ -24,14 +24,14 @@ namespace FlightSimulatorWpf
 			this.value = value;
 		}
 		public String addres { get; set; }
-		public String value { get; set; }
+		public Double value { get; set; }
 		public Mutex mutex = new Mutex();
 	}
 	class FlyModel : IModel
 	{
 		enum Error : int { notCanConnect, getErrFromServer, communicationSlowly, unepctedErr, communityProblemTryFix };
-		enum variables : int { longitude, latitude, indicatedSpeed, gpsAltitude, internalRoll,
-								internalPitch, altimeterAltitude, headingDeg, groundSpeed, verticalSpeed }
+//		enum variables : int { longitude, latitude, indicatedSpeed, gpsAltitude, internalRoll,
+//								internalPitch, altimeterAltitude, headingDeg, groundSpeed, verticalSpeed }
 		class NotSuccessedTookWithServer : Exception { };
 		private ITelnetClient telnetClient;
 		private bool stop = false;
@@ -39,7 +39,7 @@ namespace FlightSimulatorWpf
 		private Dictionary<string, FlyData> valueMap;
 		public event PropertyChangedEventHandler PropertyChanged;
 		private List<bool> errorMassage;
-		private List<bool> errorVariables;
+		private List<string> errorVariablesList;
 		//todo the problem: how i can update how value is err? and error limit
 		public FlyModel(ITelnetClient telClient)
 		{
@@ -63,6 +63,7 @@ namespace FlightSimulatorWpf
 			this.errorMassage = new List<bool> { false, false, false, false, false}; 
 			stop = false;
 			this.telnetClient = telClient;
+			errorVariablesList = new List<string>();
 		}
 		public void connect(string ip, string port) 
 		{
@@ -73,7 +74,11 @@ namespace FlightSimulatorWpf
 		public void connect() { 
 			try { this.telnetClient.connect(); }
 			catch {
-				try { CommunityProblemTryFix = true; connect(); }
+				try { if (!CommunityProblemTryFix) { 
+						CommunityProblemTryFix = true;
+						connect(); 
+					} else { throw new NotSuccessedTookWithServer(); }
+				}
 				catch (Exception) { NotCanConnect = true; /*check that this ok if not connect befor*/ disconnect(); }
 			} 
 		}
@@ -110,11 +115,16 @@ namespace FlightSimulatorWpf
 			try
 			{
 				Double value =  Convert.ToDouble(this.telnetClient.read(this.valueMap[variable].addres));
-				if (this.telnetClient.readTakeMoreTenSecond()) { CommunicationSlowly = true; }
+				if (this.telnetClient.ReadTakeMoreTenSecond) { CommunicationSlowly = true; }
 				return value;
 			}
 			catch (notSuccessedSendTheMassage) { CommunityProblemTryFix = true; this.connect(); }
-			catch (FormatException) { GetErrFromServer = true; }
+			catch (FormatException) { 
+				GetErrFromServer = true;
+
+				this.errorVariablesList.Add(variable);
+				this.NotifyPropertyChanged("ErorrMassageList");
+			}
 			catch (Exception ) { UnepctedErr = true; }
 			return Convert.ToDouble(this.valueMap[variable].value);
 		}
@@ -234,10 +244,12 @@ namespace FlightSimulatorWpf
 			get { return Double.Parse(this.valueMap["rudder"].value); }
 			set { KeepLimitAndUpdate(new int[] { -1, 1 }, value, "rudder");}
 		}
+		public List<string> ErorrMassageList { get { return this.errorVariablesList; }}
 		public bool NotCanConnect { get { return this.errorMassage[(int)Error.notCanConnect]; }
 			set { this.errorMassage[(int)Error.notCanConnect] = value; } }
 		public bool GetErrFromServer { get { return this.errorMassage[(int)Error.getErrFromServer]; }
-			set { this.errorMassage[(int)Error.getErrFromServer] = value; } }
+			set { this.errorMassage[(int)Error.getErrFromServer] = value;
+			      this.NotifyPropertyChanged("GetErrFromServer"); } }
 		public bool CommunicationSlowly { get { return this.errorMassage[(int)Error.communicationSlowly]; }
 			set { this.errorMassage[(int)Error.communicationSlowly] = value; } }
 		public bool UnepctedErr { get { return this.errorMassage[(int)Error.unepctedErr]; }

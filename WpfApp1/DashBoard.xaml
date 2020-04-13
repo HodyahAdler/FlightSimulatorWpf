@@ -1,0 +1,65 @@
+﻿<UserControl x:Class="FlightSimulatorWpf.controls.DashBoard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FlightSimulatorWpf.controls"
+             mc:Ignorable="d" 
+             d:DesignWidth="400" Background="White" Height="320">
+    <Grid>
+        <StackPanel Grid.Row="8">
+            <StackPanel Background="DeepSkyBlue">
+                <TextBlock  FontSize="20" FontWeight="UltraBlack" 
+                       Padding="1" Text="Tuned Board" HorizontalAlignment="Center"/>
+            </StackPanel>
+            <TextBlock Text="heading deg" FontWeight="UltraBlack" Padding="1" HorizontalAlignment="Center" FontSize="15"/>
+            <ProgressBar Name="headingDeg" Value="{Binding VM_HeadingDeg, Mode=OneWay}"
+                         HorizontalAlignment="Left" Maximum="400" Padding="6" Width="400"
+                         Height="10" Margin="5,2,5,0" Foreground="Yellow" />
+            <TextBlock Text="{Binding ElementName=headingDeg, Path=Value}" FontWeight="ExtraBlack"
+                       HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-14,0,0"/>
+            <TextBlock Text="vertical speed" FontWeight="UltraBlack"  Padding="1" HorizontalAlignment="Center" FontSize="15"/>
+            <ProgressBar x:Name="verticalSpeed" Value="{Binding VM_VerticalSpeed, Mode=OneWay}"
+                         HorizontalAlignment="Left" Maximum="400" Width="400" Padding="6" 
+                         Height="10" Margin="5,2,5,0" Foreground="BlueViolet"/>
+            <TextBlock Text="{Binding ElementName=verticalSpeed, Path=Value}" FontWeight="ExtraBlack"
+                       HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-14,0,0"/>
+            <TextBlock Text="ground speed" FontWeight="UltraBlack" Padding="1" HorizontalAlignment="Center" FontSize="15"/>
+            <ProgressBar x:Name="groundSpeed" Value="{Binding VM_GroundSpeed, Mode=OneWay}"
+                         HorizontalAlignment="Left" Maximum="400" Width="400" Padding="6"
+                         Height="10" Margin="5,2,5,0" Foreground="Indigo"/>
+            <TextBlock Text="{Binding ElementName=groundSpeed, Path=Value}" FontWeight="ExtraBlack"
+                       HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-14,0,0"/>
+            <TextBlock Text="indicator indicated speed" FontWeight="UltraBlack" Padding="1" HorizontalAlignment="Center" FontSize="15"/>
+            <ProgressBar x:Name="indicatedSpeed" Value="{Binding VM_IndicatedSpeed, Mode=OneWay}"
+                         HorizontalAlignment="Left" Maximum="400" Width="400" Padding="6"
+                         Height="10" Margin="5,2,5,0" Foreground="Chocolate"/>
+            <TextBlock Text="{Binding ElementName=indicatedSpeed, Path=Value}" FontWeight="ExtraBlack"
+                       HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-14,0,0"/>
+            <TextBlock Text="gps indicated altitude" FontWeight="UltraBlack" Padding="1" HorizontalAlignment="Center" FontSize="15"/>
+            <ProgressBar x:Name="gpsAltitude" Value="{Binding VM_GpsAltitude, Mode=OneWay}"
+                         HorizontalAlignment="Left" Maximum="400" Width="400" Padding="6"
+                         Height="10" Margin="5,2,5,0" Foreground="LightSkyBlue"/>
+            <TextBlock Text="{Binding ElementName=gpsAltitude, Path=Value}" FontWeight="ExtraBlack"
+                       HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-14,0,0"/>
+            <TextBlock Text="indicator internal roll" FontWeight="UltraBlack" Padding="1" HorizontalAlignment="Center" FontSize="15"/>
+            <ProgressBar x:Name="internalRoll" Value="{Binding VM_InternalRoll, Mode=OneWay}"
+                         HorizontalAlignment="Left" Maximum="400" Width="400" Padding="6"
+                         Height="10" Margin="5,2,5,0" Foreground="LightSeaGreen"/>
+            <TextBlock Text="{Binding ElementName=internalRoll, Path=Value}" FontWeight="ExtraBlack"
+                       HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-14,0,0"/>
+            <TextBlock Text="indicator internal pitch" FontWeight="UltraBlack" Padding="1" HorizontalAlignment="Center" FontSize="15"/>
+            <ProgressBar x:Name="internalPitch" Value="{Binding VM_InternalPitch, Mode=OneWay}"
+                         HorizontalAlignment="Left" Maximum="400" Width="400" Padding="6"
+                         Height="10" Margin="5,2,5,0" Foreground="Navy"/>
+            <TextBlock Text="{Binding ElementName=internalPitch, Path=Value }" FontWeight="ExtraBlack"
+                       HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-14,0,0"/>
+            <TextBlock Text="altimeter indicated altitude" FontWeight="UltraBlack" Padding="1" HorizontalAlignment="Center" FontSize="15"/>
+            <ProgressBar x:Name="altimeterAltitude" Value="{Binding VM_AltimeterAltitude, Mode=OneWay}"
+                         HorizontalAlignment="Left" Maximum="400" Width="400" Padding="6"
+                         Height="10" Margin="5,2,5,0" Foreground="Fuchsia"/>
+            <TextBlock Text="{Binding ElementName=altimeterAltitude, Path=Value}" FontWeight="ExtraBlack"
+                       HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-14,0,0"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

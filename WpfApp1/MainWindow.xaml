@@ -29,7 +29,7 @@
                 </Grid.RowDefinitions>
                 <Button Margin ="-121,10,441.334,0" Grid.Row="0" Content="TunedBoard"/>
                 <Grid Grid.Row="1" HorizontalAlignment="Center" Margin="293,10,-26.666,-10.333" Grid.RowSpan="2" Width="453">
-                    <controls:NavigationBoard x:Name="joystickView" RenderTransformOrigin="0.498,0.746" Margin="42,48,0,-16" HorizontalAlignment="Left" Width="401"/>
+                    <controls:NavigationBoard x:Name="joystickView" RenderTransformOrigin="0.498,0.746" Margin="42,38,0,0" HorizontalAlignment="Left" Width="411" Height="353" VerticalAlignment="Top"/>
                 </Grid>
 
                 <Grid Grid.Column="0" Margin="0,0,0.334,0">
@@ -44,9 +44,12 @@
                         <ColumnDefinition Width="13*"/>
 
                     </Grid.ColumnDefinitions>
-                    <controls:Map x:Name="mapView" Margin="-378,-21,189.333,-407"
-                                  RenderTransformOrigin="0.495,0.502" Height="678" Grid.RowSpan="3" VerticalAlignment="Top"/>
+                    <controls:Map x:Name="mapView" Margin="-372,0,183.333,-409"
+                                  RenderTransformOrigin="0.495,0.502" Height="659" VerticalAlignment="Top" Grid.RowSpan="3"/>
                 </Grid>
+            </Grid>
+            <Grid>
+                <controls:Message x:Name="massage" Margin="10,591,-585.333,9.667" ></controls:Message>
             </Grid>
 
         </Grid>

@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="FlightSimulatorWpf.controls.Message"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FlightSimulatorWpf.controls"
+             mc:Ignorable="d" Background="White"
+             Height="50" Width="885.333">
+
+    <Grid>
+        <Label x:Name="levelErrMessage"  Visibility="{Binding VM_GetErrFromServer}"
+               VerticalAlignment="Bottom" Background="LightGray" Margin="-24,0,0,0" >
+            <TextBlock Height="42" Width="882" FontSize="25" HorizontalAlignment="Center">
+                <Run Text="There is one or more variable that receive an error from the server"/> 
+                    <Run Foreground="Crimson" Text= "see more" FontStyle="Italic" FontWeight="Heavy" 
+                         TouchMove="errorInVeriable_TouchMove"/>
+            </TextBlock>
+        </Label >
+        <ListView Name="listErrorObject" FontSize="15" BindingGroup="{Binding VM_ErorrMassageList}" 
+                   Margin="0,-187,-177,55" HorizontalAlignment="Right"  Width="142">
+        </ListView>
+    </Grid>
+</UserControl>

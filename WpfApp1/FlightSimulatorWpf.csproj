@@ -101,6 +101,7 @@
     </Compile>
     <Compile Include="JoystickViewModel.cs" />
     <Compile Include="MapViewModel.cs" />
+    <Compile Include="MessageViewModel.cs" />
     <Compile Include="TelnetClient.cs" />
     <Compile Include="IModel.cs" />
     <Compile Include="IViewModel.cs" />

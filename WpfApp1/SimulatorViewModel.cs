@@ -12,6 +12,7 @@ namespace FlightSimulatorWpf
         public IViewModel vm_dashBoard;
         public IViewModel vm_map;
         public IViewModel vm_joystick;
+        public IViewModel vm_message;
 
 
         public SimulatorViewModel(IModel m)
@@ -19,7 +20,7 @@ namespace FlightSimulatorWpf
             vm_dashBoard = new DashBoardViewModel(m);
             vm_map = new MapViewModel(m);
             vm_joystick = new JoystickViewModel(m);
+            vm_message = new MessageViewModel(m);
         }
-
     }
 }

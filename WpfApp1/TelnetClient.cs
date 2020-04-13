@@ -17,7 +17,7 @@ namespace FlightSimulatorWpf
 		TcpClient client;
 		string ip = "127.0.0.1";
 		int port = 5402;
-		System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
+		
 		bool wasMassageOnSlowleConnest = false;
 
 		public void connect(string ip, string port)
@@ -37,42 +37,40 @@ namespace FlightSimulatorWpf
 		{
 			try
 			{
+				System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
 				byte[] reader = Encoding.ASCII.GetBytes("get " + asking + "\n");
 				this.client.GetStream().Write(reader, 0, reader.Length);
 				byte[] buffer = new byte[1024];
 				//				this.client.ReceiveTimeout = 10000;
-				this.watch.Start();
+				watch.Start();
 				this.client.GetStream().Read(buffer, 0, 1024);
-				this.watch.Stop();
+				watch.Stop();
 				String information = Encoding.ASCII.GetString(buffer, 0, buffer.Length);
+				if (watch.Elapsed >= TimeSpan.FromSeconds(10)){ ReadTakeMoreTenSecond = true; }
+				else { ReadTakeMoreTenSecond = false; }
 				return information;
 			}
 			catch (Exception) { disconnect(); throw new notSuccessedSendTheMassage(); }
 		}
-		public bool readTakeMoreTenSecond()
+		public bool ReadTakeMoreTenSecond
 		{
-			if (this.watch.Elapsed >= TimeSpan.FromSeconds(10) && !wasMassageOnSlowleConnest) 
-			{
-				wasMassageOnSlowleConnest = true;
-				return true; 
-			}
-			wasMassageOnSlowleConnest = false;
-			return false;
+			get { return this.wasMassageOnSlowleConnest; }
+			set { this.wasMassageOnSlowleConnest = value; }
 		}
 		public void write(String asking)
 		{
 			try{
-			byte[] reader = Encoding.ASCII.GetBytes("set" + asking + "\n");
+			byte[] reader = Encoding.ASCII.GetBytes("set " + asking + "\n");
 				Console.WriteLine("set" + asking + "\n");
 				this.client.GetStream().Write(reader, 0, reader.Length);
 				byte[] buffer = new byte[1024];
 				this.client.GetStream().Read(buffer, 0, 1024);
-				String information = Encoding.ASCII.GetString(buffer, 0, buffer.Length);
+				//String information = Encoding.ASCII.GetString(buffer, 0, buffer.Length);
 			} catch (Exception) { disconnect(); throw new notSuccessedSendTheMassage(); }
 		}
 		public void disconnect()
 		{
-			this.client.GetStream().Close();
+			//this.client.GetStream().Close();
 			this.client.Close();
 			//todo if need delete?
 		}

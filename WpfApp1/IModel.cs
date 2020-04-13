@@ -24,6 +24,8 @@ namespace FlightSimulatorWpf
         double Aileron { get; set; }
         double Elevator { get; set; }
         double Rudder { get; set; }
+        bool GetErrFromServer { get; }
+        List<string> ErorrMassageList { get; }
         Location AirPlaneLocation { get; }
         void NotifyPropertyChanged(string PropertyName);
 
