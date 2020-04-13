@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
+using Microsoft.Maps.MapControl.WPF;
 
 namespace FlightSimulatorWpf
 {
@@ -17,21 +18,23 @@ namespace FlightSimulatorWpf
         double InternalRoll { get;/*set;*/ }
         double InternalPitch { get; /*set;*/ }
         double AltimeterAltitude { get; /*set;*/ }
-        double Latitude { get; /*set;*/ }
+        double Latitude { get; /**set;*/ }
         double Longitude { get; /*set;*/ }
         double Throttle { get; set; }
         double Aileron { get; set; }
         double Elevator { get; set; }
         double Rudder { get; set; }
+        bool GetErrFromServer { get; }
+        List<string> ErrorMessageList { get; }
+        Location AirPlaneLocation { get; }
         void NotifyPropertyChanged(string PropertyName);
 
-        void connect(string ip, int port);
+        void connect(string ip, string port);
         void connect();
         void disconnect();
         void start();
-        
-        void moveJoystick(double elevator, double rudder);
-        void moveSlider(double throttle, double aileron);
 
+        void moveNavigation(string propName);
+        // void updateSliders(double throttle, double aileron);
     }
 }

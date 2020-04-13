@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:FlightSimulatorWpf"
         xmlns:controls="clr-namespace:FlightSimulatorWpf.controls"
         mc:Ignorable="d"
-        Title="MainWindow" Height="700.00" Width="1100.000">
+        Title="MainWindow" Height="730.00" Width="1150.000">
     <Border Padding="10">
 
         <Grid>
@@ -17,7 +17,7 @@
                 <ColumnDefinition Width="368"/>
             </Grid.ColumnDefinitions>
             <Grid Grid.Row="0" Margin="0,0,0.334,0">
-                <controls:TunedBoard x:Name="TunedBoardView"  RenderTransformOrigin="0.5,0.5" Margin="685,-11,-722.667,0" 
+                <controls:DashBoard x:Name="dashBoardView"  RenderTransformOrigin="0.5,0.5" Margin="713,-6,-750.934,0" 
                                      Height="331" VerticalAlignment="Top"/>
             </Grid>
             <Grid Grid.Column="1" RenderTransformOrigin="0.48,0.454" Grid.ColumnSpan="2" Margin="1,0,0.333,-0.333">
@@ -26,9 +26,8 @@
                     <RowDefinition Height="77*"/>
                     <RowDefinition Height="304*"/>
                 </Grid.RowDefinitions>
-                <Button Margin ="-121,10,441.334,0" Grid.Row="0" Content="TunedBoard"/>
                 <Grid Grid.Row="1" HorizontalAlignment="Center" Margin="293,10,-26.666,-10.333" Grid.RowSpan="2" Width="453">
-                    <controls:MyJoystick x:Name="joystickView" RenderTransformOrigin="0.498,0.746" Margin="42,48,0,-16" HorizontalAlignment="Left" Width="401"/>
+                    <controls:NavigationBoard x:Name="joystickView" RenderTransformOrigin="0.498,0.746" Margin="0,47,29,0.333"/>
                 </Grid>
 
                 <Grid Grid.Column="0" Margin="0,0,0.334,0">
@@ -43,10 +42,10 @@
                         <ColumnDefinition Width="13*"/>
 
                     </Grid.ColumnDefinitions>
-                    <controls:Map x:Name="mapView" Margin="-378,-21,189.333,-407"
+                    <controls:Map x:Name="mapView" Margin="-388,0,216.8,-427.6"
                                   RenderTransformOrigin="0.495,0.502" Height="678" 
                                   VerticalAlignment="Top" HorizontalAlignment="Right"
-                                  Width="700" Grid.RowSpan="3"/>
+                                  Width="700" Grid.Row="1" Grid.RowSpan="2"/>
                 </Grid>
             </Grid>
 

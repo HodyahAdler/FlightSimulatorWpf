@@ -11,10 +11,10 @@ namespace FlightSimulatorWpf
     {
         private IModel model;
 
-        private double throttle;
-        private double aileron;
-        private double rudder;
-        private double elevator;
+        /* private double vm_throttle;
+         private double vm_aileron;
+         private double vm_rudder;
+         private double vm_elevator;*/
 
         public event PropertyChangedEventHandler PropertyChanged;
         public JoystickViewModel(IModel m)
@@ -29,38 +29,61 @@ namespace FlightSimulatorWpf
         //from view Properties
         public double VM_Elevator
         {
-            get { return elevator; }
+            get { return model.Elevator; }
             set
             {
-                elevator = value;
-                model.moveJoystick(elevator, rudder);
+                if (model.Elevator != value)
+                {
+                    Console.WriteLine("elevJoy= {0}", value);
+
+                    model.Elevator = value;
+                    model.moveNavigation("elevator");
+
+                }
             }
         }
         public double VM_Rudder
         {
-            get { return rudder; }
+            get { return model.Rudder; }
             set
             {
-                rudder = value;
-                model.moveJoystick(elevator, rudder);
+                if (model.Rudder != value)
+                {
+                    //Console.WriteLine("rudderJoy= {0}", value);
+
+                    model.Rudder = value;
+                    model.moveNavigation("rudder");
+
+                }
             }
         }
         public double VM_Throttle
         {
-            get { return throttle; }
+            get { return model.Throttle; }
             set
             {
-                throttle = value;
-                model.moveSlider(throttle, aileron);
+                if (model.Throttle != value)
+                {
+                    //if (value < 0) value = 0; else if (value > 1) value = 1;
+                    //Console.WriteLine("throt= {0}", value);
+                    model.Throttle = value;
+                    model.moveNavigation("throttle");
+                }
             }
         }
         public double VM_Aileron
         {
-            get { return aileron; }
+            get { return model.Aileron; }
             set
             {
-                aileron = value;
-                model.moveSlider(throttle, aileron);
+                if (model.Aileron != value)
+                {
+                    //if (value < -1) value = -1; else if (value > 1) value = 1;
+                    //Console.WriteLine("aile= {0}", value);
+
+                    model.Aileron = value;
+                    model.moveNavigation("aileron");
+                }
             }
         }
 

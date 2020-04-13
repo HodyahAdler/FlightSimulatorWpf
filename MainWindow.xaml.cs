@@ -1,4 +1,4 @@
-﻿  
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,21 +22,19 @@ namespace FlightSimulatorWpf
     /// </summary>
     public partial class MainWindow : Window
     {
-        SimulatorViewModel vm;
-        public MainWindow()
+        public MainWindow(string ip, string port)
         {
             InitializeComponent();
-            vm = new SimulatorViewModel(new FlyModel(new TelnetClient()));
-            DataContext = vm;
 
-
-            InitializeComponent();
             IModel model = new FlyModel(new TelnetClient());
-            model.connect();
-            model.start();
             SimulatorViewModel viewModelSimulator = new SimulatorViewModel(model);
-            TunedBoardView.DataContext = viewModelSimulator.tb_vm;
 
+            joystickView.DataContext = viewModelSimulator.vm_joystick;
+            dashBoardView.DataContext = viewModelSimulator.vm_dashBoard;
+            mapView.DataContext = viewModelSimulator.vm_map;
+
+            model.connect(ip, port);
+            model.start();
         }
 
     }

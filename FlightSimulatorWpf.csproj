@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A261550D-959E-4F03-A738-DA54515DA6CC}</ProjectGuid>
+    <ProjectGuid>{BE9030D2-9B9A-4A5F-8E4E-5D26AA7E160A}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>FlightSimulatorWpf</RootNamespace>
     <AssemblyName>FlightSimulatorWpf</AssemblyName>
@@ -39,6 +39,7 @@
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Bing Maps WPF Control\V1\Libraries\Microsoft.Maps.MapControl.WPF.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -58,26 +59,28 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="controls\DashBoard.xaml.cs">
+      <DependentUpon>DashBoard.xaml</DependentUpon>
+    </Compile>
     <Compile Include="controls\Joystick.xaml.cs">
       <DependentUpon>Joystick.xaml</DependentUpon>
     </Compile>
     <Compile Include="controls\Map.xaml.cs">
       <DependentUpon>Map.xaml</DependentUpon>
     </Compile>
-    <Compile Include="controls\MyJoystick.xaml.cs">
-      <DependentUpon>MyJoystick.xaml</DependentUpon>
+    <Compile Include="controls\Message.xaml.cs">
+      <DependentUpon>Message.xaml</DependentUpon>
     </Compile>
-    <Compile Include="controls\TunedBoard.xaml.cs">
-      <DependentUpon>TunedBoard.xaml</DependentUpon>
+    <Compile Include="controls\NavigationBoard.xaml.cs">
+      <DependentUpon>NavigationBoard.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FlyModel.cs" />
-    <Compile Include="FlyTelnetClient.cs" />
-    <Compile Include="ITelnetClient.cs" />
-    <Compile Include="IViewModel.cs" />
-    <Compile Include="JoystickViewModel.cs" />
-    <Compile Include="MapViewModel.cs" />
+    <Compile Include="MessageViewModel.cs" />
     <Compile Include="SimulatorViewModel.cs" />
-    <Compile Include="TunedBoardViewModel.cs" />
+    <Compile Include="TelnetClient.cs" />
+    <Page Include="controls\DashBoard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="controls\Joystick.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -86,11 +89,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="controls\MyJoystick.xaml">
+    <Page Include="controls\Message.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="controls\TunedBoard.xaml">
+    <Page Include="controls\NavigationBoard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="InputUserData.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -102,14 +109,22 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="INotifyPropertyChanged.cs" />
+    <Compile Include="DashBoardViewModel.cs" />
+    <Compile Include="FlyModel.cs" />
     <Compile Include="IModel.cs" />
+    <Compile Include="InputUserData.xaml.cs">
+      <DependentUpon>InputUserData.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ITelnetClient.cs" />
+    <Compile Include="IViewModel.cs" />
+    <Compile Include="JoystickViewModel.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MapViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -127,7 +142,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="bin\Debug\FlightSimulatorWpf.exe.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -137,14 +151,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="bin\Debug\FlightSimulatorWpf.exe" />
-    <Content Include="bin\Debug\FlightSimulatorWpf.pdb" />
-    <Content Include="bin\Debug\Microsoft.Maps.MapControl.WPF.dll" />
     <Resource Include="controls\airplane-icon.png" />
-    <Resource Include="bin\Debug\Microsoft.Maps.MapControl.WPF.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="bin\Release\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
