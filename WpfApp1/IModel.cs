@@ -24,17 +24,26 @@ namespace FlightSimulatorWpf
         double Aileron { get; set; }
         double Elevator { get; set; }
         double Rudder { get; set; }
-        bool GetErrFromServer { get; }
-        List<string> ErorrMassageList { get; }
+        List<string> IndicatedSpeedErrorList { get; }
+        List<string> GpsAltitudeErrorList { get; }
+        List<string> InternalRollErrorList { get; }
+        List<string> InternalPitchErrorList { get; }
+        List<string> AltimeterAltitudeErrorList { get; }
+        List<string> HeadingDegErrorList { get; }
+        List<string> GroundSpeedErrorList { get; }
+        List<string> VerticalSpeedErrorList { get; }
+
         Location AirPlaneLocation { get; }
+        HashSet<string> MassageError { get;  }
+
         void NotifyPropertyChanged(string PropertyName);
 
-        void connect(string ip, string port);
-        void connect();
-        void disconnect();
-        void start();
+        void Connect(string ip, string port);
+        void Connect();
+        void Disconnect();
+        void Start();
 
-        void moveJoystick(double elevator, double rudder);
-        void updateSliders(double throttle, double aileron);
+        void MoveNavigation(string propName);
+        // void updateSliders(double throttle, double aileron);
     }
 }
