@@ -37,7 +37,7 @@ namespace FlightSimulatorWpf
                     Console.WriteLine("elevJoy= {0}", value);
 
                     model.Elevator = value;
-                    model.moveNavigation("elevator");
+                    model.MoveNavigation("elevator");
 
                 }
             }
@@ -52,7 +52,7 @@ namespace FlightSimulatorWpf
                     //Console.WriteLine("rudderJoy= {0}", value);
 
                     model.Rudder = value;
-                    model.moveNavigation("rudder");
+                    model.MoveNavigation("rudder");
 
                 }
             }
@@ -67,7 +67,7 @@ namespace FlightSimulatorWpf
                     //if (value < 0) value = 0; else if (value > 1) value = 1;
                     //Console.WriteLine("throt= {0}", value);
                     model.Throttle = value;
-                    model.moveNavigation("throttle");
+                    model.MoveNavigation("throttle");
                 }
             }
         }
@@ -82,7 +82,7 @@ namespace FlightSimulatorWpf
                     //Console.WriteLine("aile= {0}", value);
 
                     model.Aileron = value;
-                    model.moveNavigation("aileron");
+                    model.MoveNavigation("aileron");
                 }
             }
         }

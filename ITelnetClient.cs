@@ -7,15 +7,14 @@ using System.Threading.Tasks;
 
 namespace FlightSimulatorWpf
 {
-    class notSuccessedConnectToServer : Exception { }
-    class notSuccessedSendTheMessage : Exception { }
+    class NotSuccessedConnectToServer : Exception { }
+    class NotSuccessedSendTheMessage : Exception { }
     interface ITelnetClient
     {
-        void connect();
-        void connect(string ip, string port);
-        String read(String asking);
-        void write(String asking);
-        void disconnect();
+        void Connect(string ip, string port);
+        String Read(String asking);
+        void Write(String asking);
+        void Disconnect();
         bool ReadTakeMoreTenSecond { set; get; }
     }
 }

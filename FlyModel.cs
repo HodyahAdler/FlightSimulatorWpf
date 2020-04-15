@@ -15,15 +15,17 @@ using System.Windows.Controls;
 
 namespace FlightSimulatorWpf
 {
-
+	/**
+	 * FlyData save address and value of propartis, and mutex to the object.
+	 * */
 	public class FlyData
 	{
-		public FlyData(String address, double value)
+		public FlyData(string address, double value)
 		{
 			this.address = address;
 			this.value = value;
 		}
-		public String address { get; set; }
+		public string address { get; set; }
 		public double value { get; set; }
 		public Mutex mutex = new Mutex();
 
@@ -31,28 +33,29 @@ namespace FlightSimulatorWpf
 
 	class FlyModel : IModel
 	{
-		enum Error : int { notCanConnect, getErrFromServer, communicationSlowly, unexpectedErr, communityProblemTryFix };
-		enum variables : int
-		{
-			longitude, latitude, indicatedSpeed, gpsAltitude, internalRoll,
-			internalPitch, altimeterAltitude, headingDeg, groundSpeed, verticalSpeed
-		}
-		class NotSuccessedTookWithServer : Exception { };
 		private ITelnetClient telnetClient;
 		private bool stop;
 		private Thread updateThread;
 		private Dictionary<string, FlyData> valueMap;
 		public event PropertyChangedEventHandler PropertyChanged;
-		private List<bool> errorMessage;
-		private List<string> errorVariablesList;
-		//todo the problem: how i can update how value is err? and error limit
+
+		//private HashSet<string> messageError;
+		private bool communityProblemTryFix;
+		private List<string> dashBoardError;
+		private List<string> generalErrList;
 
 		private Queue<string> sendToSimQueue;
 		private readonly Mutex mut2 = new Mutex();
+		private string ip;
+		private string port;
 
+		/**
+		 * FlyModel constructor update variables. 
+		 * get ITelnetClient.
+		 */
 		public FlyModel(ITelnetClient telClient)
 		{
-			//read value
+			//Read value
 			valueMap = new Dictionary<string, FlyData>();
 			valueMap.Add("longitude", new FlyData("/position/longitude-deg", 0.0));
 			valueMap.Add("latitude", new FlyData("/position/latitude-deg", 0.0));
@@ -64,55 +67,100 @@ namespace FlightSimulatorWpf
 			valueMap.Add("headingDeg", new FlyData("/instrumentation/heading-indicator/indicated-heading-deg", 0.0));
 			valueMap.Add("groundSpeed", new FlyData("/instrumentation/gps/indicated-ground-speed-kt", 0.0));
 			valueMap.Add("verticalSpeed", new FlyData("/instrumentation/gps/indicated-vertical-speed", 0.0));
-			// write value 
+			// Write value 
 			valueMap.Add("throttle", new FlyData("/controls/engines/current-engine/throttle", 0.0));
 			valueMap.Add("aileron", new FlyData("/controls/flight/aileron", 0.0));
 			valueMap.Add("elevator", new FlyData("/controls/flight/elevator", 0.0));
 			valueMap.Add("rudder", new FlyData("/controls/flight/rudder", 0.0));
-
-			this.errorMessage = new List<bool> { false, false, false, false, false };
-			stop = false;
+			this.dashBoardError = new List<string>();
+			this.stop = false;
 			this.telnetClient = telClient;
-			errorVariablesList = new List<string>();
 			sendToSimQueue = new Queue<string>();
 
-		}
-		public void connect(string ip, string port)
-		{
-			if (ip.Length == 0) { ip = ConfigurationManager.AppSettings["ip"].ToString(); }
-			if (port.Length == 0) { port = ConfigurationManager.AppSettings["port"].ToString(); }
-			this.telnetClient.connect(ip, port);
-		}
-		public void connect()
-		{
-			try { this.telnetClient.connect(); }
-			catch
-			{
-				try
-				{
-					if (!CommunityProblemTryFix)
-					{
-						CommunityProblemTryFix = true;
-						connect();
-					}
-					else { throw new NotSuccessedTookWithServer(); }
-				}
-				catch (Exception) { NotCanConnect = true; /*check that this ok if not connect befor*/ disconnect(); }
-			}
-		}
-		public void disconnect()
-		{
-			stop = true;
-			//todo not need stop the thread? 
-			this.telnetClient.disconnect();
+			this.generalErrList = new List<string>();
 		}
 
-		public void start()
+		/**
+		 * Connect get ip and port and try connect to server.
+		 */
+		public void Connect(string ip, string port)
 		{
-			startGet();
-			startSet();
+			if (ip.Length == 0)
+			{
+				this.ip = ConfigurationManager.AppSettings["ip"].ToString();
+			}
+			else
+			{
+				this.ip = ip;
+			}
+			if (port.Length == 0)
+			{
+				this.port = ConfigurationManager.AppSettings["port"].ToString();
+			}
+			else
+			{
+				this.port = port;
+			}
+			Connect();
 		}
-			public void startGet()
+
+		/**
+		 * Connect to server with this ip and port.
+		 * if not seccsed, try again. 
+		 * if this not seccsed update that have problem with connect.
+		 */
+		public void Connect()
+		{
+			try
+			{
+				this.telnetClient.Connect(this.ip, this.port);
+			}
+			catch (Exception e)
+			{
+				if (!communityProblemTryFix)
+				{
+					communityProblemTryFix = true;
+					try
+					{
+						this.telnetClient.Connect(this.ip, this.port);
+					}
+					catch
+					{
+						UpdateGeneralErrList("The server is offline");
+					}
+
+				}
+				else
+				{
+					UpdateGeneralErrList("The server is offline");
+				}
+			}
+
+			// removing Errors from previous runs in case of reconnect
+			generalErrList.Clear();
+			dashBoardError.Clear();
+		}
+		public void Disconnect()
+		{
+			stop = true;
+			if ((this.updateThread != null) && this.updateThread.IsAlive)
+			{
+				this.updateThread.Abort();
+			}
+
+			generalErrList.Clear();
+			UpdateGeneralErrList("The server is offline");
+		}
+
+		public void Start()
+		{
+			StartGet();
+			StartSet();
+		}
+
+
+
+		public void StartGet()
 			{
 			//starting the get
 			this.updateThread = new Thread(delegate ()
@@ -135,7 +183,7 @@ namespace FlightSimulatorWpf
 			this.updateThread.Start();
 		}
 
-			public void startSet()
+			public void StartSet()
 			{
 			//starting the get
 			new Thread(delegate ()
@@ -145,7 +193,7 @@ namespace FlightSimulatorWpf
 					while (sendToSimQueue.Count() > 0)
 					{
 						mut2.WaitOne();
-						this.telnetClient.write(sendToSimQueue.Peek());
+						this.telnetClient.Write(sendToSimQueue.Peek());
 						sendToSimQueue.Dequeue();
 						mut2.ReleaseMutex();
 					}
@@ -159,48 +207,100 @@ namespace FlightSimulatorWpf
 		{
 			try
 			{
-				Double value = Convert.ToDouble(this.telnetClient.read(this.valueMap[variable].address));
-				if (this.telnetClient.ReadTakeMoreTenSecond) { CommunicationSlowly = true; }
+				Double value = Convert.ToDouble(this.telnetClient.Read(this.valueMap[variable].address));
+
+				if (this.telnetClient.ReadTakeMoreTenSecond) { UpdateGeneralErrList("The server is very Slow"); }
 				return value;
 			}
-			catch (notSuccessedSendTheMessage) { CommunityProblemTryFix = true; this.connect(); }
-			catch (FormatException) {
-				GetErrFromServer = true;
+			catch (NotSuccessedSendTheMessage) {
+				this.telnetClient.Disconnect();
+				Disconnect();
+				UpdateGeneralErrList("The server is offline");
 
-				this.errorVariablesList.Add(variable);
-				this.NotifyPropertyChanged("ErrorMessageList");
 			}
-			catch (Exception) { UnexpectedErr = true; }
+			catch (FormatException) {
+				if (variable.Equals("latitude") || variable.Equals("longitude")) { UpdateGeneralErrList("The Airplane is out of Boundaries - " + variable); }
+				else { UpdateDashBoardMessage("server error - " + variable); }
+			}
+			catch (Exception) { UpdateGeneralErrList("Unexpected Error"); }
 			return (this.valueMap[variable].value);
 		}
+		private async void UpdateGeneralErrList(string errorName)
+		{
+			try
+			{
+				// only if the error view does not present the error message
+				if (!this.generalErrList.Contains(errorName))
+				{
+					this.generalErrList.Add(errorName);
+					this.NotifyPropertyChanged("GeneralErrList");
+					if(errorName!= "The server is offline")
+					{
+						await Task.Delay(6000); // after propriate Time-removing the error from the List
+						this.generalErrList.Remove(errorName);
+						this.NotifyPropertyChanged("GeneralErrList");
+					}
+					
+				}
 
+			}
+			catch { }
+		}
+
+
+		public void UpdateDashBoardMessage(string errorName)
+		{
+			this.dashBoardError.Add(errorName);
+			string proparty = errorName.Split(' ')[3];
+			this.NotifyPropertyChanged(char.ToUpper(proparty[0]) + proparty.Substring(1) + "ErrorsList");
+		}
 		public void NotifyPropertyChanged(string PropertyName)
 		{
 			this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
 		}
-		public void moveNavigation(string propName)
+		public void MoveNavigation(string propName)
 		{
 			sendToSimQueue.Enqueue(this.valueMap[propName].address+ " " + this.valueMap[propName].value);
 					   			 
 		}
 
-		private void upDateSetProperty(String proparty, Double value)
+		private void UpDateSetProperty(String proparty, Double value)
 		{
 			this.valueMap[proparty].mutex.WaitOne();
 			this.valueMap[proparty].value = value;
-			if (proparty.Equals("latitude") || proparty.Equals("longitude")) { this.NotifyPropertyChanged("AirPlaneLocation"); }
+			//if (proparty.Equals("latitude") || proparty.Equals("longitude")) { this.NotifyPropertyChanged("AirPlaneLocation"); }
+			if (proparty.Equals("latitude")) { this.NotifyPropertyChanged("AirPlaneLocation"); }
 			else { this.NotifyPropertyChanged(char.ToUpper(proparty[0]) + proparty.Substring(1)); }
 			this.valueMap[proparty].mutex.ReleaseMutex();
 		}
 		public void KeepLimitAndUpdate(double[] limit, Double value, String name)
 		{
-			if (value < limit[0]) { upDateSetProperty(name, limit[0]); }
-			else if (value > limit[1]) { upDateSetProperty(name, limit[1]); }
-			else { upDateSetProperty(name, value); }
+			if (value < limit[0]) { UpDateSetProperty(name, limit[0]); UpdateDashBoardMessage("limit error - " + name); }
+			else if (value > limit[1]) { UpDateSetProperty(name, limit[1]); UpdateDashBoardMessage("limit error - " + name); }
+			else { UpDateSetProperty(name, value); }
+		}
+
+		private List<string> CreateListErr(string name)
+		{
+			List<string> list = new List<string>();
+			string limitEr = "limit error - " + name;
+			string serverEr = "server error - " + name;
+
+			foreach (string s in this.dashBoardError)
+			{
+				if (s == limitEr)
+				{
+					list.Add("Limits Error");
+				} else if(s == serverEr)
+				{
+					list.Add("Invalid Value");
+				}
+			}
+
+			return list;
 		}
 
 		// Properties for binding with the viewModel
-		//todo check limited of think
 		public double HeadingDeg
 		{
 			get { return (this.valueMap["headingDeg"].value); }
@@ -228,7 +328,10 @@ namespace FlightSimulatorWpf
 		}
 		public Location AirPlaneLocation
 		{
-			get { return new Location(this.Latitude, this.Longitude); }
+			get
+			{
+				return new Location(this.Latitude, this.Longitude);
+			}
 		}
 		public double InternalRoll
 		{
@@ -236,7 +339,7 @@ namespace FlightSimulatorWpf
 			set
 			{
 				//todo check this limit
-				upDateSetProperty("internalRoll", value);
+				UpDateSetProperty("internalRoll", value);
 			}
 		}
 		public double InternalPitch
@@ -244,7 +347,7 @@ namespace FlightSimulatorWpf
 			get { return (this.valueMap["internalPitch"].value); }
 			set
 			{ //todo check this limit
-				upDateSetProperty("internalPitch", value);
+				UpDateSetProperty("internalPitch", value);
 			}
 		}
 		public double AltimeterAltitude
@@ -256,7 +359,7 @@ namespace FlightSimulatorWpf
 		public double Latitude
 		{
 			get { return (this.valueMap["latitude"].value); }
-			set { KeepLimitAndUpdate(new double[] { -90, 90 }, value, "latitude"); }
+			set { KeepLimitAndUpdate(new double[] { -90, 85 }, value, "latitude"); }
 		}
 
 		public double Longitude
@@ -286,45 +389,26 @@ namespace FlightSimulatorWpf
 			set { KeepLimitAndUpdate(new double[] { -1, 1 }, value, "rudder"); }
 		}
 
-		public List<string> ErrorMessageList { get { return this.errorVariablesList; } }
-		public bool NotCanConnect
-		{
-			get { return this.errorMessage[(int)Error.notCanConnect]; }
-			set { this.errorMessage[(int)Error.notCanConnect] = value; }
-		}
-		public bool GetErrFromServer
-		{
-			get { return this.errorMessage[(int)Error.getErrFromServer]; }
-			set { this.errorMessage[(int)Error.getErrFromServer] = value;
-				this.NotifyPropertyChanged("GetErrFromServer");}
-		}
-		public bool CommunicationSlowly
-		{
-			get { return this.errorMessage[(int)Error.communicationSlowly]; }
-			set { this.errorMessage[(int)Error.communicationSlowly] = value; }
-		}
-		public bool UnexpectedErr
-		{
-			get { return this.errorMessage[(int)Error.unexpectedErr]; }
-			set { this.errorMessage[(int)Error.unexpectedErr] = value; }
-		}
-		public bool CommunityProblemTryFix
-		{
-			get { return this.errorMessage[(int)Error.communityProblemTryFix]; }
-			set
-			{
-				if (!this.errorMessage[(int)Error.communityProblemTryFix])
-				{
-					this.errorMessage[(int)Error.communityProblemTryFix] = value;
-				};
-			}
-		}
 
-		/**
-		 * 		public void UpdateThrottle() {  }
-		public void UpdateAileron() { }
-		public void UpdateElevator() {  }
-		public void UpdateRudder() { }
-		*/
+		public List<string> IndicatedSpeedErrorsList { get { return CreateListErr("indicatedSpeed"); } }
+		public List<string> GpsAltitudeErrorsList { get { return CreateListErr("gpsAltitude"); } }
+		public List<string> InternalRollErrorsList { get { return CreateListErr("internalRoll"); } }
+		public List<string> InternalPitchErrorsList { get { return CreateListErr("internalPitch"); } }
+		public List<string> AltimeterAltitudeErrorsList { get { return CreateListErr("altimeterAltitude"); } }
+		public List<string> HeadingDegErrorsList { get { return CreateListErr("headingDeg"); } }
+		public List<string> GroundSpeedErrorsList { get { return CreateListErr("groundSpeed"); } }
+		public List<string> VerticalSpeedErrorsList { get { return CreateListErr("verticalSpeed"); } }
+
+
+		public List<string> GeneralErrList
+		{
+			get
+			{
+				List<string> l = new List<string>(generalErrList);
+				
+				return l; }
+			}
+		
 	}
+	
 }

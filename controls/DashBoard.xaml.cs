@@ -20,10 +20,11 @@ namespace FlightSimulatorWpf.controls
 	/// </summary>
 	public partial class DashBoard : UserControl
 	{
-		public DashBoard()
+        public DashBoard()
 		{
 			InitializeComponent();
-		}
+            
+        }
 
         private Boolean AutoScrolling = true;
 
@@ -53,7 +54,6 @@ namespace FlightSimulatorWpf.controls
                 scroll.ScrollToVerticalOffset(scroll.ExtentHeight);
             }
         }
-
 
     }
 }

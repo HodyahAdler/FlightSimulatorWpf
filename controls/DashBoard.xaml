@@ -24,7 +24,7 @@
     </UserControl.Resources>
 
     <StackPanel>
-        <TextBlock Background="DeepSkyBlue" FontSize="20" FontWeight="UltraBlack" 
+        <TextBlock Background="#FF64A7BD" FontSize="20" FontWeight="UltraBlack"
                        Padding="1" Text="Dashboard" HorizontalAlignment="Center" Width="400" TextAlignment="Center"/>
 
         <Grid>
@@ -47,9 +47,16 @@
 
 
             <StackPanel Grid.Row="0" Grid.Column="0" >
-                <TextBlock Text="heading deg" FontWeight="UltraBlack" Padding="3" HorizontalAlignment="Center" FontSize="15" DockPanel.Dock="Top"/>
+                <TextBlock Text="heading deg" FontWeight="UltraBlack" Padding="3" HorizontalAlignment="Center" FontSize="15" DockPanel.Dock="Top">
+                    <TextBlock.Foreground>
+                        <SolidColorBrush
+                            Color="{Binding ColorsA[0]}">
+                        </SolidColorBrush>
+                    </TextBlock.Foreground>
+                </TextBlock>
+                           
                 <ProgressBar Name="headingDeg" Value="{Binding VM_HeadingDeg, Mode=OneWay}"
-                         HorizontalAlignment="Left" Maximum="400"  Width="200"
+                         HorizontalAlignment="Left" Maximum="400"  Width="280"
                          Height="12" Margin="5,0,5,0" Foreground="Yellow" />
                 <TextBlock Text="{Binding ElementName=headingDeg, Path=Value}" FontWeight="ExtraBlack"
                        HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-14,0,0" />
@@ -62,7 +69,8 @@
                           HorizontalScrollBarVisibility="Hidden"
                           CanContentScroll="True"  FontSize="10" Margin="5,5,5,0"
                           ScrollChanged="errors_ScrollChanged">
-                <ListView  Name="headingDeg_errors_list" ItemsSource="{Binding myList}" Foreground="#FFDC1515" Padding="-2">
+                <ListView  Name="headingDeg_errors_list" ItemsSource="{Binding VM_HeadingDegErrorsList}"
+                           Foreground="#FFDC1515" Padding="-2">
                 </ListView>
             </ScrollViewer>
 
@@ -70,9 +78,15 @@
 
 
             <StackPanel Grid.Row="1" Grid.Column="0">
-                <TextBlock Text="vertical speed" FontWeight="UltraBlack" Padding="1" HorizontalAlignment="Center" FontSize="15" DockPanel.Dock="Top"/>
+                <TextBlock Text="vertical speed" FontWeight="UltraBlack" Padding="1" HorizontalAlignment="Center" FontSize="15" DockPanel.Dock="Top">
+                    <TextBlock.Foreground>
+                        <SolidColorBrush
+                            Color="{Binding ColorsA[1]}">
+                        </SolidColorBrush>
+                    </TextBlock.Foreground>
+                </TextBlock>
                 <ProgressBar x:Name="verticalSpeed" Value="{Binding VM_VerticalSpeed, Mode=OneWay}"
-                         HorizontalAlignment="Left" Maximum="400" Padding="6" Width="200"
+                         HorizontalAlignment="Left" Maximum="400" Padding="6" Width="280"
                          Height="12" Margin="5,0,5,0" Foreground="BlueViolet" />
                 <TextBlock Text="{Binding ElementName=verticalSpeed, Path=Value}" FontWeight="ExtraBlack"
                        HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-14,0,0"/>
@@ -85,15 +99,21 @@
                           HorizontalScrollBarVisibility="Hidden"
                           CanContentScroll="True"  FontSize="10" Margin="5,5,5,0"
                           ScrollChanged="errors_ScrollChanged" >
-                <ListView  Name="verticalSpeed_errors_list" ItemsSource="{Binding myList}" Foreground="#FFDC1515" Padding="-2">
+                <ListView  Name="verticalSpeed_errors_list" ItemsSource="{Binding VM_VerticalSpeedErrorsList}" Foreground="#FFDC1515" Padding="-2">
                 </ListView>
             </ScrollViewer>
 
 
             <StackPanel Grid.Row="2" Grid.Column="0">
-                <TextBlock Text="ground speed" FontWeight="UltraBlack" Padding="1" HorizontalAlignment="Center" FontSize="15" DockPanel.Dock="Top"/>
+                <TextBlock Text="ground speed" FontWeight="UltraBlack" Padding="1" HorizontalAlignment="Center" FontSize="15" DockPanel.Dock="Top">
+                    <TextBlock.Foreground>
+                        <SolidColorBrush
+                            Color="{Binding ColorsA[2]}">
+                        </SolidColorBrush>
+                    </TextBlock.Foreground>
+                </TextBlock>
                 <ProgressBar x:Name="groundSpeed" Value="{Binding VM_GroundSpeed, Mode=OneWay}"
-                         HorizontalAlignment="Left" Maximum="400" Padding="6" Width="200"
+                         HorizontalAlignment="Left" Maximum="400" Padding="6" Width="280"
                          Height="12" Margin="5,0,5,0" Foreground="Indigo" />
                 <TextBlock Text="{Binding ElementName=groundSpeed, Path=Value}" FontWeight="ExtraBlack"
                        HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-14,0,0"/>
@@ -105,15 +125,21 @@
                           HorizontalScrollBarVisibility="Hidden"
                           CanContentScroll="True"  FontSize="10" Margin="5,5,5,0"
                           ScrollChanged="errors_ScrollChanged" >
-                <ListView  Name="groundSpeed_errors_list" ItemsSource="{Binding myList}" Foreground="#FFDC1515" Padding="-2">
+                <ListView  Name="groundSpeed_errors_list" ItemsSource="{Binding VM_GroundSpeedErrorsList}" Foreground="#FFDC1515" Padding="-2">
                 </ListView>
             </ScrollViewer>
 
 
             <StackPanel Grid.Row="3" Grid.Column="0">
-                <TextBlock Text="indicator indicated speed" FontWeight="UltraBlack" Padding="1" HorizontalAlignment="Center" FontSize="15" DockPanel.Dock="Top"/>
+                <TextBlock Text="indicator indicated speed" FontWeight="UltraBlack" Padding="1" HorizontalAlignment="Center" FontSize="15" DockPanel.Dock="Top">
+                    <TextBlock.Foreground>
+                        <SolidColorBrush
+                            Color="{Binding ColorsA[3]}">
+                        </SolidColorBrush>
+                    </TextBlock.Foreground>
+                </TextBlock>
                 <ProgressBar x:Name="indicatedSpeed" Value="{Binding VM_IndicatedSpeed, Mode=OneWay}"
-                         HorizontalAlignment="Left" Maximum="400" Padding="6" Width="200"
+                         HorizontalAlignment="Left" Maximum="400" Padding="6" Width="280"
                          Height="12" Margin="5,0,5,0" Foreground="Chocolate" />
                 <TextBlock Text="{Binding ElementName=indicatedSpeed, Path=Value}" FontWeight="ExtraBlack"
                        HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-14,0,0"/>
@@ -125,16 +151,22 @@
                           HorizontalScrollBarVisibility="Hidden"
                           CanContentScroll="True"  FontSize="10" Margin="5,5,5,0"
                           ScrollChanged="errors_ScrollChanged" >
-                <ListView  Name="indicatedSpeed_errors_list" ItemsSource="{Binding myList}" Foreground="#FFDC1515" Padding="-2">
+                <ListView  Name="indicatedSpeed_errors_list" ItemsSource="{Binding VM_IndicatedSpeedErrorsList}" Foreground="#FFDC1515" Padding="-2">
                 </ListView>
             </ScrollViewer>
 
 
 
             <StackPanel Grid.Row="4" Grid.Column="0">
-                <TextBlock Text="gps indicated altitude" FontWeight="UltraBlack" Padding="1" HorizontalAlignment="Center" FontSize="15" DockPanel.Dock="Top"/>
+                <TextBlock Text="gps indicated altitude" FontWeight="UltraBlack" Padding="1" HorizontalAlignment="Center" FontSize="15" DockPanel.Dock="Top">
+                    <TextBlock.Foreground>
+                        <SolidColorBrush
+                            Color="{Binding ColorsA[4]}">
+                        </SolidColorBrush>
+                    </TextBlock.Foreground>
+                </TextBlock>
                 <ProgressBar x:Name="gpsAltitude" Value="{Binding VM_GpsAltitude, Mode=OneWay}"
-                         HorizontalAlignment="Left" Maximum="400" Padding="6" Width="200"
+                         HorizontalAlignment="Left" Maximum="400" Padding="6" Width="280"
                          Height="12" Margin="5,0,5,0" Foreground="LightSkyBlue" />
                 <TextBlock Text="{Binding ElementName=gpsAltitude, Path=Value}" FontWeight="ExtraBlack"
                        HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-14,0,0"/>
@@ -146,16 +178,22 @@
                           HorizontalScrollBarVisibility="Hidden"
                           CanContentScroll="True"  FontSize="10" Margin="5,5,5,0"
                           ScrollChanged="errors_ScrollChanged" >
-                <ListView  Name="gpsAltitude_errors_list" ItemsSource="{Binding myList}" Foreground="#FFDC1515" Padding="-2">
+                <ListView  Name="gpsAltitude_errors_list" ItemsSource="{Binding VM_GpsAltitudeErrorsList}" Foreground="#FFDC1515" Padding="-2">
                 </ListView>
             </ScrollViewer>
 
 
 
             <StackPanel Grid.Row="5" Grid.Column="0">
-                <TextBlock Text="indicator internal roll" FontWeight="UltraBlack" Padding="1" HorizontalAlignment="Center" FontSize="15" DockPanel.Dock="Top"/>
+                <TextBlock Text="indicator internal roll" FontWeight="UltraBlack" Padding="1" HorizontalAlignment="Center" FontSize="15" DockPanel.Dock="Top">
+                    <TextBlock.Foreground>
+                        <SolidColorBrush
+                            Color="{Binding ColorsA[5]}">
+                        </SolidColorBrush>
+                    </TextBlock.Foreground>
+                </TextBlock>
                 <ProgressBar x:Name="internalRoll" Value="{Binding VM_InternalRoll, Mode=OneWay}"
-                         HorizontalAlignment="Left" Maximum="400" Padding="6" Width="200"
+                         HorizontalAlignment="Left" Maximum="400" Padding="6" Width="280"
                          Height="12" Margin="5,0,5,0" Foreground="LightSeaGreen" />
                 <TextBlock Text="{Binding ElementName=internalRoll, Path=Value}" FontWeight="ExtraBlack"
                        HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-14,0,0"/>
@@ -167,7 +205,7 @@
                           HorizontalScrollBarVisibility="Hidden"
                           CanContentScroll="True"  FontSize="10" Margin="5,5,5,0"
                           ScrollChanged="errors_ScrollChanged" >
-                <ListView  Name="internalRoll_errors_list" ItemsSource="{Binding myList}" Foreground="#FFDC1515" Padding="-2">
+                <ListView  Name="internalRoll_errors_list" ItemsSource="{Binding VM_InternalRollErrorsList}" Foreground="#FFDC1515" Padding="-2">
                 </ListView>
             </ScrollViewer>
 
@@ -175,9 +213,15 @@
 
 
             <StackPanel Grid.Row="6" Grid.Column="0">
-                <TextBlock Text="indicator internal pitch" FontWeight="UltraBlack" Padding="1" HorizontalAlignment="Center" FontSize="15" DockPanel.Dock="Top"/>
+                <TextBlock Text="indicator internal pitch" FontWeight="UltraBlack" Padding="1" HorizontalAlignment="Center" FontSize="15" DockPanel.Dock="Top">
+                    <TextBlock.Foreground>
+                        <SolidColorBrush
+                            Color="{Binding ColorsA[6]}">
+                        </SolidColorBrush>
+                    </TextBlock.Foreground>
+                </TextBlock>
                 <ProgressBar x:Name="internalPitch" Value="{Binding VM_InternalPitch, Mode=OneWay}"
-                         HorizontalAlignment="Left" Maximum="400" Padding="6" Width="200"
+                         HorizontalAlignment="Left" Maximum="400" Padding="6" Width="280"
                          Height="12" Margin="5,0,5,0" Foreground="Navy" />
                 <TextBlock Text="{Binding ElementName=internalPitch, Path=Value }" FontWeight="ExtraBlack"
                        HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-14,0,0"/>
@@ -189,14 +233,20 @@
                           HorizontalScrollBarVisibility="Hidden"
                           CanContentScroll="True"  FontSize="10" Margin="5,5,5,0"
                           ScrollChanged="errors_ScrollChanged">
-                <ListView Name="internalPitch_errors_list" ItemsSource="{Binding myList}" Foreground="#FFDC1515" Padding="-2">
+                <ListView Name="internalPitch_errors_list" ItemsSource="{Binding VM_InternalPitchErrorsList}" Foreground="#FFDC1515" Padding="-2">
                 </ListView >
             </ScrollViewer>
 
             <StackPanel Grid.Row="7" Grid.Column="0">
-                <TextBlock Text="altimeter indicated altitude" FontWeight="UltraBlack" Padding="1" HorizontalAlignment="Center" FontSize="15" DockPanel.Dock="Top"/>
+                <TextBlock Text="altimeter indicated altitude" FontWeight="UltraBlack" Padding="1" HorizontalAlignment="Center" FontSize="15" DockPanel.Dock="Top">
+                    <TextBlock.Foreground>
+                        <SolidColorBrush
+                            Color="{Binding ColorsA[7]}">
+                        </SolidColorBrush>
+                    </TextBlock.Foreground>
+                </TextBlock>
                 <ProgressBar x:Name="altimeterAltitude" Value="{Binding VM_AltimeterAltitude, Mode=OneWay}"
-                         HorizontalAlignment="Left" Maximum="400" Padding="6" Width="200"
+                         HorizontalAlignment="Left" Maximum="400" Padding="6" Width="280"
                          Height="12" Margin="5,0,5,0" Foreground="Fuchsia" />
                 <TextBlock Text="{Binding ElementName=altimeterAltitude, Path=Value}" FontWeight="ExtraBlack"
                        HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-14,0,0"/>
@@ -208,7 +258,7 @@
                           HorizontalScrollBarVisibility="Hidden"
                           CanContentScroll="True"  FontSize="10" Margin="5,5,5,0"
                           ScrollChanged="errors_ScrollChanged" >
-                <ListView  Name="altimeterAltitude_errors_list" ItemsSource="{Binding myList}" Foreground="#FFDC1515" Padding="-2">
+                <ListView  Name="altimeterAltitude_errors_list" ItemsSource="{Binding VM_AltimeterAltitudeErrorsList}" Foreground="#FFDC1515" Padding="-2">
                 </ListView>
             </ScrollViewer>
 

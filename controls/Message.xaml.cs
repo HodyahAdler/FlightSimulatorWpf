@@ -20,16 +20,49 @@ namespace FlightSimulatorWpf.controls
 	/// </summary>
 	public partial class Message : UserControl
 	{
-
 		public Message()
 		{
 			InitializeComponent();
-			listErrorObject.Visibility = Visibility.Hidden;
+
 		}
 
-		private void errorInVeriable_TouchMove(object sender, TouchEventArgs e)
-		{
-			listErrorObject.Visibility = Visibility.Visible;
-		}
-	}
+        private Boolean AutoScrolling = true;
+
+        private void errors_ScrollChanged(Object sender, ScrollChangedEventArgs e)
+        {
+            ScrollViewer scroll = sender as ScrollViewer;
+
+            // User scroll event : set or unset auto-scroll mode
+            if (e.ExtentHeightChange == 0)
+            {   // Content unchanged : user scroll event
+                if (scroll.VerticalOffset == scroll.ScrollableHeight)
+                {   // Scroll bar is in bottom
+                    // Set auto-scroll mode
+                    AutoScrolling = true;
+                }
+                else
+                {   // Scroll bar isn't in bottom
+                    // Unset auto-scroll mode
+                    AutoScrolling = false;
+                }
+            }
+
+            // Content scroll event : auto-scroll eventually
+            if (AutoScrolling && e.ExtentHeightChange != 0)
+            {   // Content changed and auto-scroll mode set
+                // Autoscroll
+                scroll.ScrollToVerticalOffset(scroll.ExtentHeight);
+            }
+        }
+
+        private void Disconnect_Button_Clicked(object sender, RoutedEventArgs e)
+        {
+          
+        }
+
+        private void Connect_Button_Clicked(object sender, RoutedEventArgs e)
+        {
+
+        }
+    }
 }

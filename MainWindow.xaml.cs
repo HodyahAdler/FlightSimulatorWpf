@@ -32,9 +32,11 @@ namespace FlightSimulatorWpf
             joystickView.DataContext = viewModelSimulator.vm_joystick;
             dashBoardView.DataContext = viewModelSimulator.vm_dashBoard;
             mapView.DataContext = viewModelSimulator.vm_map;
+            messagesView.DataContext = viewModelSimulator.vm_message;
 
-            model.connect(ip, port);
-            model.start();
+
+            model.Connect(ip, port);
+            model.Start();
         }
 
     }

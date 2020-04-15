@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace FlightSimulatorWpf
 {
@@ -13,8 +12,7 @@ namespace FlightSimulatorWpf
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public List<string> myList { get; set; }
-
+        public System.Windows.Media.Color[] ColorsA {get; private set; }
         public DashBoardViewModel(IModel m)
         {
             this.model = m;
@@ -23,19 +21,13 @@ namespace FlightSimulatorWpf
                 NotifyPropertyChanged("VM_" + e.PropertyName);
             };
 
-            myList = new List<string>();
-            this.myList.Add("invalid value               20:00:30");
-            this.myList.Add("value out of range      05:00:00");
-            this.myList.Add("invalid value               03:00:30");
-            this.myList.Add("invalid value               12:12:23");
-            this.myList.Add("value out of range      13:56:01");
-
-            this.myList.Add("20:00:30 ----->      invalid value");
-            this.myList.Add("20:00:30 ----->      value out of range");
-            this.myList.Add("20:00:30 ----->      invalid value");
-            this.myList.Add("20:00:30 ----->      invalid value");
-            this.myList.Add("20:00:30 ----->      value out of range");
-
+            // INITIALIZING HEADERS COLORS
+            ColorsA = new System.Windows.Media.Color[8];
+            for (int i = 0; i < ColorsA.Length; i++)
+            {
+                ColorsA[i] = Colors.Black;
+            }
+            NotifyPropertyChanged("ColorsA");
         }
         public double VM_HeadingDeg
         {
@@ -47,7 +39,8 @@ namespace FlightSimulatorWpf
         }
         public double VM_GroundSpeed
         {
-            get { return model.GroundSpeed; }
+            get
+            { return model.GroundSpeed; }
         }
         public double VM_IndicatedSpeed
         {
@@ -77,5 +70,131 @@ namespace FlightSimulatorWpf
                 this.PropertyChanged(this, new PropertyChangedEventArgs(PropertyName));
             }
         }
+
+        public List<string> VM_HeadingDegErrorsList
+        {
+            get
+            {
+                List<string> list = this.model.HeadingDegErrorsList;
+                if (!first_update(list))
+                {
+                    changed(0);
+                }
+                return list;
+            }
+        }
+
+        public List<string> VM_VerticalSpeedErrorsList
+        {
+            get
+            {
+                List<string> list = this.model.VerticalSpeedErrorsList;
+                if (!first_update(list))
+                {
+                    changed(1);
+                }
+                return list;
+            }
+        }
+        public List<string> VM_GroundSpeedErrorsList
+        {
+            get
+            {
+                List<string> list = this.model.GroundSpeedErrorsList;
+                if (!first_update(list))
+                {
+                    changed(2);
+                }
+                return list;
+            }
+        }
+
+        public List<string> VM_IndicatedSpeedErrorsList
+        {
+            get
+            {
+                List<string> list = this.model.IndicatedSpeedErrorsList;
+                if (!first_update(list))
+                {
+                    changed(3);
+                }
+                return list;
+            }
+        }
+
+        public List<string> VM_GpsAltitudeErrorsList
+        {
+            get
+            {
+                List<string> list = this.model.GpsAltitudeErrorsList;
+                if (!first_update(list))
+                {
+                    changed(4);
+                }
+                return list;
+            }
+        }
+
+        public List<string> VM_InternalRollErrorsList
+        {
+            get
+            {
+                List<string> list = this.model.InternalRollErrorsList;
+                if (!first_update(list))
+                {
+                    changed(5);
+                }
+                return list;
+            }
+        }
+
+        public List<string> VM_InternalPitchErrorsList
+        {
+            get
+            {
+                List<string> list = this.model.InternalPitchErrorsList;
+                if (!first_update(list))
+                {
+                    changed(6);
+                }
+                return list;
+            }
+        }
+
+        public List<string> VM_AltimeterAltitudeErrorsList
+        {
+            get
+            {
+                List<string> list = this.model.AltimeterAltitudeErrorsList;
+                if (!first_update(list))
+                {
+                    changed(7);
+                }
+                return list;
+            }
+        }
+
+
+        private bool first_update(List<string> list)
+        {
+            if (list.Count == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private async void changed(int location)
+        {
+            ColorsA[location] = Colors.Red;
+            NotifyPropertyChanged("ColorsA");
+            await Task.Delay(3000);
+            ColorsA[location] = Colors.Black;
+            NotifyPropertyChanged("ColorsA");
+        }
+
     }
 }
