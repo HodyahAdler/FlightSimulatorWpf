@@ -21,11 +21,14 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-
-            <controls:Message Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+            <DockPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                <Button DockPanel.Dock="Left" Width="120" Margin="80 0 0 0" FontWeight="Bold" FontSize="18"> Disconnect</Button>
+                <controls:Message Margin="60 0 0 0"
                 x:Name="messagesView" >
                 </controls:Message>
-               
+                <Button DockPanel.Dock="Right" Width="120" Margin="0 0 10 0" FontWeight="Bold" FontSize="18" > Reconnect </Button>
+
+            </DockPanel>
             
             
             <!--Map Adding-->

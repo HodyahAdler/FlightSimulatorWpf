@@ -24,18 +24,9 @@ namespace FlightSimulatorWpf
         double Aileron { get; set; }
         double Elevator { get; set; }
         double Rudder { get; set; }
-
-        List<string> IndicatedSpeedErrorsList { get; }
-        List<string> GpsAltitudeErrorsList { get; }
-        List<string> InternalRollErrorsList { get; }
-        List<string> InternalPitchErrorsList { get; }
-        List<string> AltimeterAltitudeErrorsList { get; }
-        List<string> HeadingDegErrorsList { get; }
-        List<string> GroundSpeedErrorsList { get; }
-        List<string> VerticalSpeedErrorsList { get; }
+     
         Location AirPlaneLocation { get; }
-        List<string> GeneralErrList { get; }
-
+    
         void NotifyPropertyChanged(string PropertyName);
 
         void Connect(string ip, string port);
@@ -46,6 +37,17 @@ namespace FlightSimulatorWpf
         void MoveNavigation(string propName);
 
 
-       
+
+
+        List<string> GeneralErrList { get; }
+
+        List<string> IndicatedSpeedErrorsList { get; }
+        List<string> GpsAltitudeErrorsList { get; }
+        List<string> InternalRollErrorsList { get; }
+        List<string> InternalPitchErrorsList { get; }
+        List<string> AltimeterAltitudeErrorsList { get; }
+        List<string> HeadingDegErrorsList { get; }
+        List<string> GroundSpeedErrorsList { get; }
+        List<string> VerticalSpeedErrorsList { get; }
     }
 }

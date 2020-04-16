@@ -86,6 +86,5 @@ namespace FlightSimulatorWpf
             get { return this.myList; }
         }*/
 
-
     }
 }

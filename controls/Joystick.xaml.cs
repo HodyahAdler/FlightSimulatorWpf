@@ -24,7 +24,6 @@ namespace FlightSimulatorWpf.controls
         private Point startPoint;
         private Point endPoint;
         private UIElement element; // element for Knob
-        private bool middle_animation;
 
         /// <summary>
         /// Dependency Properties for Joystick
@@ -65,87 +64,81 @@ namespace FlightSimulatorWpf.controls
             //Base.MouseUp += Knob_MouseUp;
 
             centerKnob = Knob.Resources["CenterKnob"] as Storyboard;
-            middle_animation = false;
 
 
         }
 
         private void Knob_MouseDown(object sender, MouseButtonEventArgs e)
         {
-
-            if (!middle_animation)
-            {
-                this.startPoint = e.GetPosition(this); // the starting point (the center of the joystick)
-                this.endPoint = e.GetPosition(this);
-
-                element = (UIElement)sender;
-                element.CaptureMouse();
-            }
             
 
+            this.startPoint = e.GetPosition(this); // the starting point (the center of the joystick)
+            this.endPoint = e.GetPosition(this);
+
+            element = (UIElement)sender;
+            element.CaptureMouse();
+
+            centerKnob.Stop();
 
         }
 
 
         private void Knob_MouseMove(object sender, MouseEventArgs e)
         {
-            if (!middle_animation)
+            double width = Math.Abs(Constants.MIN_JOY_LIMIT) + Math.Abs(Constants.MAX_JOY_LIMIT);
+
+            if (e.LeftButton == MouseButtonState.Pressed) // only if mouse is pressed (it also means there is a start point value)
             {
-                double width = Math.Abs(Constants.MIN_JOY_LIMIT) + Math.Abs(Constants.MAX_JOY_LIMIT);
+                endPoint = e.GetPosition(this);
+                double x = endPoint.X - startPoint.X;
+                double y = endPoint.Y - startPoint.Y;
+                double lineLength = Math.Sqrt(x * x + y * y);
 
-                if (e.LeftButton == MouseButtonState.Pressed) // only if mouse is pressed (it also means there is a start point value)
+                /* the line is outside of the joystick circle - finding the dot on the line that is on the circle edge
+                 * the circle center is (0,0), the current dot of the mouse is (x1,y1)
+                 * Line: y-y0 = m(x-x0), circle: (x-x0)^2+(y-y0)^2=r^2
+                 * the common dot is: x = r/sqrt(m^2+1) Pos/Neg  , y = m*x
+                 */
+                if (lineLength > width / 2)
+
                 {
-                    endPoint = e.GetPosition(this);
-                    double x = endPoint.X - startPoint.X;
-                    double y = endPoint.Y - startPoint.Y;
-                    double lineLength = Math.Sqrt(x * x + y * y);
-
-                    /* the line is outside of the joystick circle - finding the dot on the line that is on the circle edge
-                     * the circle center is (0,0), the current dot of the mouse is (x1,y1)
-                     * Line: y-y0 = m(x-x0), circle: (x-x0)^2+(y-y0)^2=r^2
-                     * the common dot is: x = r/sqrt(m^2+1) Pos/Neg  , y = m*x
-                     */
-                    if (lineLength > width / 2)
-
+                    double m; // the slope
+                    double r = width / 2;
+                    if (x != 0)
                     {
-                        double m; // the slope
-                        double r = width / 2;
-                        if (x != 0)
+                        m = y / x;
+                        double newX = r / Math.Sqrt(Math.Pow(m, 2) + 1);
+                        if (x > 0)
                         {
-                            m = y / x;
-                            double newX = r / Math.Sqrt(Math.Pow(m, 2) + 1);
-                            if (x > 0)
-                            {
-                                x = newX;
-                            }
-                            else
-                            {
-                                x = -newX;
-                            }
-                            // finding the y value
-                            y = m * x;
+                            x = newX;
                         }
-                        //special case because there is no slope, can not use the Linear equation, setting the y value to its closest value according to the limits
                         else
                         {
-                            if (y > 0)
-                            {
-                                y = Constants.MAX_JOY_LIMIT;
-                            }
-                            else
-                            {
-                                y = Constants.MIN_JOY_LIMIT;
-                            }
+                            x = -newX;
+                        }
+                        // finding the y value
+                        y = m * x;
+                    }
+                    //special case because there is no slope, can not use the Linear equation, setting the y value to its closest value according to the limits
+                    else
+                    {
+                        if (y > 0)
+                        {
+                            y = Constants.MAX_JOY_LIMIT;
+                        }
+                        else
+                        {
+                            y = Constants.MIN_JOY_LIMIT;
                         }
                     }
-
-                    knobPosition.X = x;
-                    knobPosition.Y = y;
-
-                    Rudder = normalize(knobPosition.X, width); // after normalization
-                    Elevator = -1 * (normalize(knobPosition.Y, width)); // after normalization;
-
                 }
+
+                knobPosition.X = x;
+                knobPosition.Y = y;
+
+                Rudder = normalize(knobPosition.X, width); // after normalization
+                Elevator = -1 * (normalize(knobPosition.Y, width)); // after normalization;
+
             }
         }
 
@@ -156,12 +149,14 @@ namespace FlightSimulatorWpf.controls
 
         private void Knob_MouseUp(object sender, MouseEventArgs e)
         {
-            if (!middle_animation)
-            {
-                centerKnob.Begin();
-                middle_animation = true;
+            centerKnob.Begin();
+            element.ReleaseMouseCapture();
 
-            }
+            Rudder = 0;
+            Elevator = 0; // setting back the Rudder & Elevator to 0;
+
+            knobPosition.X = 0;
+            knobPosition.Y = 0;
 
 
         }
@@ -169,16 +164,7 @@ namespace FlightSimulatorWpf.controls
         // when the Animation is finished
         private void centerKnob_Completed(object sender, EventArgs e)
         {
-            Rudder = 0;
-            Elevator = 0; // setting back the Rudder & Elevator to 0;
-
-            knobPosition.X = 0;
-            knobPosition.Y = 0;
-            centerKnob.Stop();
-
-            element.ReleaseMouseCapture();
-            middle_animation = false;
-
+            
 
         }
 

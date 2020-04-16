@@ -55,14 +55,5 @@ namespace FlightSimulatorWpf.controls
             }
         }
 
-        private void Disconnect_Button_Clicked(object sender, RoutedEventArgs e)
-        {
-          
-        }
-
-        private void Connect_Button_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }
