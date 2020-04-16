@@ -13,6 +13,21 @@ namespace FlightSimulatorWpf
 	/// </summary>
 	public partial class App : Application
 	{
+		private IModel model;
+
+		
+		public SimulatorViewModel Simulator_vm;
+
+
+		void App_Startup(Object sender, StartupEventArgs e)
+		{
+			//creating a Model
+			IModel model = new FlyModel(new TelnetClient());
+
+			Simulator_vm = new SimulatorViewModel(model);
+			
+
+		}
 
 	}
 }

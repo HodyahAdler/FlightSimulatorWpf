@@ -24,12 +24,26 @@ namespace FlightSimulatorWpf
 		public InputUserData()
 		{
 			InitializeComponent();
+			DataContext = (Application.Current as App).Simulator_vm;
+			this.Show();
 		}
 		private void Button_Click_On_Ip_Message(object sender, RoutedEventArgs e)
 		{
-			MainWindow mainWindow = new MainWindow(ipUserInput.Text, portUserInput.Text);
-			mainWindow.Show();
-			this.Close();
+			try
+			{
+				(Application.Current as App).Simulator_vm.Start_Run(ipUserInput.Text, portUserInput.Text);
+
+				this.Hide();
+				//creating the Main Window
+				MainWindow mainWindow = new MainWindow();
+				mainWindow.Show();
+				this.Close();
+
+			}
+			catch(Exception exc)
+			{
+				Console.WriteLine("{0}", exc.Message);
+			}
 		}
 	}
 }

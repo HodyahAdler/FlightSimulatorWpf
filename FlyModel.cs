@@ -15,6 +15,9 @@ using System.Windows.Controls;
 
 namespace FlightSimulatorWpf
 {
+	/**
+	 * FlyData save address and value of propartis, and mutex to the object.
+	 * */
 	public class FlyData
 	{
 		public FlyData(string address, double value)
@@ -30,13 +33,6 @@ namespace FlightSimulatorWpf
 
 	class FlyModel : IModel
 	{
-		//enum Error : int { notCanConnect, getErrFromServer, communicationSlowly, unexpectedErr, communityProblemTryFix };
-		enum variables : int
-		{
-			longitude, latitude, indicatedSpeed, gpsAltitude, internalRoll,
-			internalPitch, altimeterAltitude, headingDeg, groundSpeed, verticalSpeed
-		}
-		class NotSuccessedTookWithServer : Exception { };
 		private ITelnetClient telnetClient;
 		private bool stop;
 		private Thread updateThread;
@@ -50,17 +46,19 @@ namespace FlightSimulatorWpf
 
 		private Queue<string> sendToSimQueue;
 		private readonly Mutex mut2 = new Mutex();
+		private string ip;
+		private string port;
 
-		// Error Lists
-		//public Dictionary<string, List<string>> errorLists;
-
-
+		/**
+		 * FlyModel constructor update variables. 
+		 * get ITelnetClient.
+		 */
 		public FlyModel(ITelnetClient telClient)
 		{
-			//read value
+			//Read value
 			valueMap = new Dictionary<string, FlyData>();
-			valueMap.Add("longitude", new FlyData("/position/longitude-deg", 0.0));
-			valueMap.Add("latitude", new FlyData("/position/latitude-deg", 0.0));
+			valueMap.Add("longitude", new FlyData("/position/longitude-deg", 34.888781));
+			valueMap.Add("latitude", new FlyData("/position/latitude-deg", 32.002644));
 			valueMap.Add("indicatedSpeed", new FlyData("/instrumentation/airspeed-indicator/indicated-speed-kt", 0.0));
 			valueMap.Add("gpsAltitude", new FlyData("/instrumentation/gps/indicated-altitude-ft", 0.0));
 			valueMap.Add("internalRoll", new FlyData("/instrumentation/attitude-indicator/internal-roll-deg", 0.0));
@@ -69,7 +67,7 @@ namespace FlightSimulatorWpf
 			valueMap.Add("headingDeg", new FlyData("/instrumentation/heading-indicator/indicated-heading-deg", 0.0));
 			valueMap.Add("groundSpeed", new FlyData("/instrumentation/gps/indicated-ground-speed-kt", 0.0));
 			valueMap.Add("verticalSpeed", new FlyData("/instrumentation/gps/indicated-vertical-speed", 0.0));
-			// write value 
+			// Write value 
 			valueMap.Add("throttle", new FlyData("/controls/engines/current-engine/throttle", 0.0));
 			valueMap.Add("aileron", new FlyData("/controls/flight/aileron", 0.0));
 			valueMap.Add("elevator", new FlyData("/controls/flight/elevator", 0.0));
@@ -81,132 +79,97 @@ namespace FlightSimulatorWpf
 
 			this.generalErrList = new List<string>();
 		}
+
+		/**
+		 * Connect get ip and port and try connect to server.
+		 */
 		public void Connect(string ip, string port)
 		{
-			if (ip.Length == 0) { ip = ConfigurationManager.AppSettings["ip"].ToString(); }
-			if (port.Length == 0) { port = ConfigurationManager.AppSettings["port"].ToString(); }
-			this.telnetClient.Connect(ip, port);
-
-			// removing Errors from previous runs in case of reconnect
-			generalErrList.Clear();
-			dashBoardError.Clear();
+			if (ip.Length == 0)
+			{
+				this.ip = ConfigurationManager.AppSettings["ip"].ToString();
+			}
+			else
+			{
+				this.ip = ip;
+			}
+			if (port.Length == 0)
+			{
+				this.port = ConfigurationManager.AppSettings["port"].ToString();
+			}
+			else
+			{
+				this.port = port;
+			}
+			Connect();
 		}
+
+		/**
+		 * Connect to server with this ip and port.
+		 * if not seccsed, try again. 
+		 * if this not seccsed update that have problem with connect.
+		 */
 		public void Connect()
 		{
-			try { this.telnetClient.Connect(); }
-			catch
+			try
 			{
-				try
+				this.telnetClient.Connect(this.ip, this.port);
+			}
+			catch (Exception e)
+			{
+				if (!communityProblemTryFix)
 				{
-					if (!communityProblemTryFix)
+					communityProblemTryFix = true;
+					try
 					{
-						communityProblemTryFix = true;
-						Connect();
+						this.telnetClient.Connect(this.ip, this.port);
 					}
-					else { throw new NotSuccessedTookWithServer(); }
+					catch
+					{
+						UpdateGeneralErrList("The server is offline");
+					}
+
 				}
-				catch (Exception)
+				else
 				{
 					UpdateGeneralErrList("The server is offline");
-					/*check that this ok if not connect befor*/
-					Disconnect();
 				}
 			}
 
 			// removing Errors from previous runs in case of reconnect
-			generalErrList.Clear();
+			if(this.generalErrList.Contains("The server is offline"))
+			{
+				generalErrList.Clear();
+				UpdateGeneralErrList("The server is offline");
+			} else
+			{
+				generalErrList.Clear();
+			}
+			
 			dashBoardError.Clear();
 		}
 		public void Disconnect()
 		{
 			stop = true;
-			//todo not need stop the thread? 
-			this.telnetClient.Disconnect();
+			if ((this.updateThread != null) && this.updateThread.IsAlive)
+			{
+				this.updateThread.Abort();
+			}
+
+			generalErrList.Clear();
 			UpdateGeneralErrList("The server is offline");
 		}
+		/**
+				public void Start()
+				{
+					StartGet();
+
+				}
+		**/
+
 
 		public void Start()
 		{
-			
-
-
-			/*genErrors.Add("The server is very Slow");
-			genErrors.Add("The server is offline");
-			genErrors.Add("Unexpected Error");
-			genErrors.Add("The Airplane is out of Boundaries");
-			this.NotifyPropertyChanged("GenErrors");*/
-
-			foreach (string i in this.generalErrList)
-			{
-				Console.WriteLine("insert: " + i);
-			}
-
-			UpdateGeneralErrList("The server is very Slow");
-
-			clicked();
-
-
-
-
-
-			startGet();
-			startSet();
-		}
-
-		private async void clicked()
-		{
-			await Task.Delay(5000);
-
-			UpdateGeneralErrList("The Airplane is out of Boundaries - longitude");
-
-			foreach (string i in this.generalErrList)
-			{
-				Console.WriteLine("insert: " + i);
-			}
-
-			UpdateDashBoardMessage("server error - " + "throttle");
-			UpdateDashBoardMessage("limit error - " + "throttle");
-			await Task.Delay(5000);
-
-			UpdateGeneralErrList("The server is offline");
-
-
-
-			UpdateDashBoardMessage("limit error - " + "groundSpeed");
-			UpdateDashBoardMessage("server error - " + "groundSpeed");
-			UpdateDashBoardMessage("server error - " + "throttle");
-			await Task.Delay(5000);
-			UpdateGeneralErrList("The server is very Slow");
-
-			UpdateDashBoardMessage("limit error - " + "throttle");
-			UpdateDashBoardMessage("limit error - " + "groundSpeed");
-			await Task.Delay(5000);
-
-			UpdateGeneralErrList("Unexpected Error");
-			UpdateGeneralErrList("The Airplane is out of Boundaries - latitude");
-
-			UpdateDashBoardMessage("server error - " + "groundSpeed");
-
-			UpdateDashBoardMessage("limit error - " + "internalPitch");
-			await Task.Delay(5000);
-
-			UpdateDashBoardMessage("server error - " + "groundSpeed");
-			UpdateDashBoardMessage("server error - " + "gpsAltitude");
-			UpdateDashBoardMessage("limit error - " + "internalRoll");
-			UpdateDashBoardMessage("limit error - " + "internalPitch");
-			UpdateDashBoardMessage("server error - " + "altimeterAltitude");
-			UpdateDashBoardMessage("server error - " + "indicatedSpeed");
-
-			UpdateDashBoardMessage("limit error - " + "headingDeg");
-			await Task.Delay(5000);
-			UpdateDashBoardMessage("limit error - " + "headingDeg");
-			UpdateDashBoardMessage("server error - " + "verticalSpeed");
-			UpdateDashBoardMessage("server error - " + "verticalSpeed");
-		}
-
-
-		public void startGet()
-			{
 			//starting the get
 			this.updateThread = new Thread(delegate ()
 			{
@@ -222,19 +185,6 @@ namespace FlightSimulatorWpf
 					AltimeterAltitude = ReadFromTelnetClient("altimeterAltitude");
 					Latitude = ReadFromTelnetClient("latitude");
 					Longitude = ReadFromTelnetClient("longitude");
-					Thread.Sleep(250);
-				}
-			});
-			this.updateThread.Start();
-		}
-
-			public void startSet()
-			{
-			//starting the get
-			new Thread(delegate ()
-			{
-				while (!stop)
-				{
 					while (sendToSimQueue.Count() > 0)
 					{
 						mut2.WaitOne();
@@ -242,37 +192,66 @@ namespace FlightSimulatorWpf
 						sendToSimQueue.Dequeue();
 						mut2.ReleaseMutex();
 					}
+					Thread.Sleep(250);
 				}
-
-			}).Start();
+			});
+			this.updateThread.Start();
 		}
+		/**
+					public void StartSet()
+					{
+					//starting the get
+//			new Thread(delegate ()
+			//		{
+						while (!stop)
+						{
+							while (sendToSimQueue.Count() > 0)
+							{
+								mut2.WaitOne();
+								this.telnetClient.Write(sendToSimQueue.Peek());
+								sendToSimQueue.Dequeue();
+								mut2.ReleaseMutex();
+							}
+						}
 
+//			}).Start();
+				}
+		**/
 
 		public Double ReadFromTelnetClient(String variable)
 		{
 			try
 			{
 				Double value = Convert.ToDouble(this.telnetClient.Read(this.valueMap[variable].address));
-
+				/**
+				if ((variable.Equals("latitude")) && (this.Latitude + 0.01 != value ) && (this.Latitude > 32.005))
+				{
+					this.communityProblemTryFix = true;
+				}
+				if ((variable.Equals("longitude")) && (this.Longitude + 0.01 != value)&&(this.Longitude > 35))
+				{
+					this.communityProblemTryFix = true;
+				}
+	**/
 				if (this.telnetClient.ReadTakeMoreTenSecond) { UpdateGeneralErrList("The server is very Slow"); }
 				return value;
 			}
-			catch (notSuccessedSendTheMessage) {
-				if (!communityProblemTryFix)
-				{
-					communityProblemTryFix = true;
-					this.Connect();
-				}
-				else { UpdateGeneralErrList("The server is offline"); }
+			catch (NotSuccessedSendTheMessage)
+			{
+				this.telnetClient.Disconnect();
+				Disconnect();
+				UpdateGeneralErrList("The server is offline");
+
 			}
-			catch (FormatException) {
+			catch (FormatException)
+			{
 				if (variable.Equals("latitude") || variable.Equals("longitude")) { UpdateGeneralErrList("The Airplane is out of Boundaries - " + variable); }
 				else { UpdateDashBoardMessage("server error - " + variable); }
 			}
 			catch (Exception) { UpdateGeneralErrList("Unexpected Error"); }
 			return (this.valueMap[variable].value);
 		}
-		public void UpdateGeneralErrList(string errorName)
+		private async void UpdateGeneralErrList(string errorName)
 		{
 			try
 			{
@@ -281,7 +260,13 @@ namespace FlightSimulatorWpf
 				{
 					this.generalErrList.Add(errorName);
 					this.NotifyPropertyChanged("GeneralErrList");
-					Console.WriteLine("MES: " + errorName);
+					if (errorName != "The server is offline")
+					{
+						await Task.Delay(6000); // after propriate Time-removing the error from the List
+						this.generalErrList.Remove(errorName);
+						this.NotifyPropertyChanged("GeneralErrList");
+					}
+
 				}
 
 			}
@@ -301,23 +286,24 @@ namespace FlightSimulatorWpf
 		}
 		public void MoveNavigation(string propName)
 		{
-			sendToSimQueue.Enqueue(this.valueMap[propName].address+ " " + this.valueMap[propName].value);
-					   			 
+			sendToSimQueue.Enqueue(this.valueMap[propName].address + " " + this.valueMap[propName].value);
+
 		}
 
-		private void upDateSetProperty(String proparty, Double value)
+		private void UpDateSetProperty(String proparty, Double value)
 		{
 			this.valueMap[proparty].mutex.WaitOne();
 			this.valueMap[proparty].value = value;
-			if (proparty.Equals("latitude") || proparty.Equals("longitude")) { this.NotifyPropertyChanged("AirPlaneLocation"); }
+			//if (proparty.Equals("latitude") || proparty.Equals("longitude")) { this.NotifyPropertyChanged("AirPlaneLocation"); }
+			if (proparty.Equals("latitude")) { this.NotifyPropertyChanged("AirPlaneLocation"); }
 			else { this.NotifyPropertyChanged(char.ToUpper(proparty[0]) + proparty.Substring(1)); }
 			this.valueMap[proparty].mutex.ReleaseMutex();
 		}
 		public void KeepLimitAndUpdate(double[] limit, Double value, String name)
 		{
-			if (value < limit[0]) { upDateSetProperty(name, limit[0]); UpdateDashBoardMessage("limit error - " + name); }
-			else if (value > limit[1]) { upDateSetProperty(name, limit[1]); UpdateDashBoardMessage("limit error - " + name); }
-			else { upDateSetProperty(name, value); }
+			if (value < limit[0]) { UpDateSetProperty(name, limit[0]); UpdateDashBoardMessage("limit error - " + name); }
+			else if (value > limit[1]) { UpDateSetProperty(name, limit[1]); UpdateDashBoardMessage("limit error - " + name); }
+			else { UpDateSetProperty(name, value); }
 		}
 
 		private List<string> CreateListErr(string name)
@@ -326,27 +312,22 @@ namespace FlightSimulatorWpf
 			string limitEr = "limit error - " + name;
 			string serverEr = "server error - " + name;
 
-			//var list = new List<string>();
-			//List<string> newList = this.dashBoardError.FindAll(s => (s.Equals(lim) || s.Equals(ser)));
-
 			foreach (string s in this.dashBoardError)
 			{
 				if (s == limitEr)
 				{
 					list.Add("Limits Error");
-				} else if(s == serverEr)
+				}
+				else if (s == serverEr)
 				{
 					list.Add("Invalid Value");
 				}
 			}
 
-			/*if (this.dashBoardError.Contains("limit error - " + name)) { list.Add("Limits Error"); }
-			if (this.dashBoardError.Contains("server error - " + name)) { list.Add("Invalid Value"); }*/
 			return list;
 		}
 
 		// Properties for binding with the viewModel
-		//todo check limited of think
 		public double HeadingDeg
 		{
 			get { return (this.valueMap["headingDeg"].value); }
@@ -376,7 +357,6 @@ namespace FlightSimulatorWpf
 		{
 			get
 			{
-				//Console.WriteLine("airPlane  =  Latitude: " + this.Latitude + "Longitude" + this.Longitude);
 				return new Location(this.Latitude, this.Longitude);
 			}
 		}
@@ -386,7 +366,7 @@ namespace FlightSimulatorWpf
 			set
 			{
 				//todo check this limit
-				upDateSetProperty("internalRoll", value);
+				UpDateSetProperty("internalRoll", value);
 			}
 		}
 		public double InternalPitch
@@ -394,7 +374,7 @@ namespace FlightSimulatorWpf
 			get { return (this.valueMap["internalPitch"].value); }
 			set
 			{ //todo check this limit
-				upDateSetProperty("internalPitch", value);
+				UpDateSetProperty("internalPitch", value);
 			}
 		}
 		public double AltimeterAltitude
@@ -406,7 +386,7 @@ namespace FlightSimulatorWpf
 		public double Latitude
 		{
 			get { return (this.valueMap["latitude"].value); }
-			set { KeepLimitAndUpdate(new double[] { -90, 90 }, value, "latitude"); }
+			set { KeepLimitAndUpdate(new double[] { -90, 85 }, value, "latitude"); }
 		}
 
 		public double Longitude
@@ -452,16 +432,11 @@ namespace FlightSimulatorWpf
 			get
 			{
 				List<string> l = new List<string>(generalErrList);
-				Console.WriteLine("model first");
 
-				foreach (string i in l)
-				{
-					Console.WriteLine("model: " + i);
-				}
-				return l; }
-				//return this.generalErrList;
+				return l;
 			}
-		
+		}
+
 	}
-	
+
 }

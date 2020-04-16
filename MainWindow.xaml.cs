@@ -22,21 +22,19 @@ namespace FlightSimulatorWpf
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow(string ip, string port)
+        public MainWindow()
         {
             InitializeComponent();
 
-            IModel model = new FlyModel(new TelnetClient());
-            SimulatorViewModel viewModelSimulator = new SimulatorViewModel(model);
 
-            joystickView.DataContext = viewModelSimulator.vm_joystick;
-            dashBoardView.DataContext = viewModelSimulator.vm_dashBoard;
-            mapView.DataContext = viewModelSimulator.vm_map;
-            messagesView.DataContext = viewModelSimulator.vm_message;
+            joystickView.DataContext = (Application.Current as App).Simulator_vm.vm_joystick;
+            dashBoardView.DataContext = (Application.Current as App).Simulator_vm.vm_dashBoard;
+            mapView.DataContext = (Application.Current as App).Simulator_vm.vm_map;
+            messagesView.DataContext = (Application.Current as App).Simulator_vm.vm_message;
 
-
-            model.Connect(ip, port);
-            model.Start();
+            /*
+                        model.Connect(ip, port);
+                        model.Start();*/
         }
 
     }

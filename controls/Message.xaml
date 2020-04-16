@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FlightSimulatorWpf.controls"
              mc:Ignorable="d" Background="White"
-             Height="50" Width="600">
+             Height="50" Width="1100">
 
     <UserControl.Resources>
         <Style TargetType="{x:Type ListViewItem}">
@@ -52,16 +52,20 @@
         </Style>
     </UserControl.Resources>
 
-
-    <ScrollViewer Name="General_Errors" Grid.Row="0" Grid.Column="1"
+    <DockPanel>
+        <Button DockPanel.Dock="Left" Width="120" Margin="80 0 0 0" FontWeight="Bold" FontSize="18" Click="Disconnect_Button_Clicked">Disconnect</Button>
+        <ScrollViewer Name="General_Errors" Margin="60 0 0 0" Width="600"
                           VerticalScrollBarVisibility="auto" MaxHeight="50"
                           HorizontalScrollBarVisibility="auto"
                           CanContentScroll="True"
                           ScrollChanged="errors_ScrollChanged">
-        <ListView Name="general_errors_list" ItemsSource="{Binding VM_GeneralErrList}" Foreground="white" 
-                  Padding="-4" HorizontalContentAlignment="Center" FontSize="11" FontWeight="Bold">            
-        </ListView>
+            <ListView Name="general_errors_list" ItemsSource="{Binding VM_GeneralErrList}" Foreground="white"
+                  Padding="-4" HorizontalContentAlignment="Center" FontSize="11" FontWeight="Bold">
+            </ListView>
+        </ScrollViewer>
+        <Button DockPanel.Dock="Right" Width="120" FontWeight="Bold" FontSize="18" Click="Connect_Button_Clicked">Reconnect</Button>
 
-    </ScrollViewer>
+    </DockPanel>
+   
 
 </UserControl>

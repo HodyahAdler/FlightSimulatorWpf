@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 
 namespace FlightSimulatorWpf
 {
-    class notSuccessedConnectToServer : Exception { }
-    class notSuccessedSendTheMessage : Exception { }
+    class NotSuccessedConnectToServer : Exception { }
+    class NotSuccessedSendTheMessage : Exception { }
     interface ITelnetClient
     {
-        void Connect();
         void Connect(string ip, string port);
         String Read(String asking);
         void Write(String asking);

@@ -34,8 +34,6 @@ namespace FlightSimulatorWpf
             {
                 if (model.Elevator != value)
                 {
-                    Console.WriteLine("elevJoy= {0}", value);
-
                     model.Elevator = value;
                     model.MoveNavigation("elevator");
 
@@ -49,8 +47,6 @@ namespace FlightSimulatorWpf
             {
                 if (model.Rudder != value)
                 {
-                    //Console.WriteLine("rudderJoy= {0}", value);
-
                     model.Rudder = value;
                     model.MoveNavigation("rudder");
 
